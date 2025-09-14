@@ -1,0 +1,242 @@
+
+<div id="container_tela" class="container_tela">
+
+  <style>
+    /* ====== Escopo exclusivo dentro de #container_tela ====== */
+    .container_tela { --ink:#0b1324; --muted:#52607a; --line:#e5e9f2; --card:#ffffff; --bg:#f7f9fc; --pos:#0fad66; --neg:#e74c3c }
+    .container_tela *{box-sizing:border-box}
+    .container_tela .wrap{max-width:1120px;margin:0 auto;padding:16px}
+    .container_tela h1{font-size:22px;margin:0 0 14px;color:var(--ink);font-weight:700}
+    .container_tela h2{font-size:16px;margin:0 0 10px;color:var(--ink);font-weight:600}
+    .container_tela p, .container_tela li, .container_tela span, .container_tela dd, .container_tela dt{color:var(--ink)}
+
+    .container_tela .grid{display:grid;gap:16px}
+    .container_tela .g-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .container_tela .g-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .container_tela .g-1{grid-template-columns:1fr}
+    @media (max-width:960px){
+      .container_tela .g-3{grid-template-columns:1fr}
+      .container_tela .g-2{grid-template-columns:1fr}
+    }
+
+    .container_tela .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px 14px 16px;
+      box-shadow:0 2px 6px rgba(10,20,50,.05);
+    }
+    .container_tela .hint{font-size:12px;color:var(--muted);margin-top:6px}
+
+    /* Listas de incidência */
+    .container_tela .inc-list{list-style:none;padding:0;margin:0}
+    .container_tela .inc-list li{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-bottom:1px dashed var(--line)}
+    .container_tela .inc-list li:last-child{border-bottom:0}
+    .container_tela .badge{display:inline-block;min-width:30px;text-align:center;padding:2px 8px;border-radius:999px;background:#f0f3fa;color:var(--ink);font-weight:600;font-size:12px}
+
+    /* Resumo resolvidas x não resolvidas */
+    .container_tela .progress{height:10px;background:#eef2f8;border-radius:999px;overflow:hidden;margin-top:10px}
+    .container_tela .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--pos),#6bd091);width:60%}
+
+    .container_tela .kpis{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+    .container_tela .kpi{flex:1 1 140px;background:#f6faf7;border:1px solid #dcefe4;border-radius:10px;padding:8px 10px}
+    .container_tela .kpi.neg{background:#fff6f5;border-color:#f2d5d2}
+    .container_tela .kpi .big{font-size:18px;font-weight:700}
+    .container_tela .kpi .lbl{font-size:12px;color:var(--muted)}
+
+    /* Word cloud simples */
+    .container_tela .cloud{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+    .container_tela .cloud .w{line-height:1;border-radius:8px;padding:6px 8px;background:#f3f6ff;border:1px solid #dfe6ff}
+    .container_tela .cloud .w[data-w="1"]{font-size:12px}
+    .container_tela .cloud .w[data-w="2"]{font-size:14px}
+    .container_tela .cloud .w[data-w="3"]{font-size:16px}
+    .container_tela .cloud .w[data-w="4"]{font-size:18px}
+    .container_tela .cloud .w[data-w="5"]{font-size:22px}
+
+    /* Ranking de causas raiz (bar chart simples) */
+    .container_tela .bars{display:grid;gap:10px}
+    .container_tela .bar{display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center}
+    .container_tela .bar .lab{font-size:12px;color:var(--ink)}
+    .container_tela .bar .track{height:12px;background:#eef2f8;border-radius:6px;overflow:hidden;position:relative}
+    .container_tela .bar .fill{position:absolute;left:0;top:0;bottom:0;background:#cfe3ff}
+    .container_tela .bar .pct{justify-self:end;font-size:12px;color:var(--muted)}
+
+    /* Templates de resposta (accordion simples) */
+    .container_tela details{border:1px solid var(--line);background:#fcfdff;border-radius:12px;padding:10px 12px}
+    .container_tela details summary{cursor:pointer;font-weight:600;color:var(--ink);outline:none}
+    .container_tela details p{margin:10px 0 6px}
+    .container_tela code{background:#f3f6ff;border:1px solid #dfe6ff;border-radius:8px;padding:6px 8px;display:block;white-space:pre-wrap}
+
+    .container_tela .pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;padding:6px 8px;border-radius:999px;border:1px solid var(--line);background:#fff}
+    .container_tela .pill i{font-style:normal;font-weight:700}
+  </style>
+
+  <div class="wrap">
+    <h1>❗ Aba 4 — Reclamações (B2B Distribuidor → Varejo)</h1>
+
+    <div class="grid g-3">
+      <!-- Reclamações Mais Comuns -->
+      <div class="card">
+        <h2>1) Reclamações Mais Comuns</h2>
+        <ul class="inc-list">
+          <li><span>Atraso na entrega</span><span class="badge" id="m_atraso">12</span></li>
+          <li><span>Produto avariado (caixas amassadas, frascos quebrados)</span><span class="badge" id="m_avaria">9</span></li>
+          <li><span>Diferença no pedido (faltou item, produto trocado)</span><span class="badge" id="m_diferenca">7</span></li>
+          <li><span>Preço divergente do combinado</span><span class="badge" id="m_preco">4</span></li>
+        </ul>
+
+        <div class="hint">Exemplos: “Meu pedido chegou com 3 caixas a menos.” • “O lote do Produto B veio com frascos quebrados.” • “Prometeram terça, chegou sexta.”</div>
+      </div>
+
+      <!-- Produtos Mais Citados em Reclamações -->
+      <div class="card">
+        <h2>2) Produtos Mais Citados</h2>
+        <ul class="inc-list">
+          <li><span>Produto A (validade curta)</span><span class="badge" id="p_a">6</span></li>
+          <li><span>Produto C (avarias no transporte)</span><span class="badge" id="p_c">5</span></li>
+        </ul>
+        <div class="hint">Sugestões: reforçar embalamento do Produto C • negociar validade mínima com fornecedor do Produto A.</div>
+      </div>
+
+      <!-- Resolvidas x Não Resolvidas -->
+      <div class="card">
+        <h2>3) Resolvidas × Não Resolvidas</h2>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="big" id="k_resolvidas">60%</div>
+            <div class="lbl">Resolvidas</div>
+          </div>
+          <div class="kpi neg">
+            <div class="big" id="k_nresolvidas">40%</div>
+            <div class="lbl">Não resolvidas / sem retorno</div>
+          </div>
+        </div>
+        <div class="progress" aria-label="Progresso resoluções">
+          <i style="width:60%" id="bar_resolvidas"></i>
+        </div>
+        <div class="hint">Ex.: “Obrigado pela reposição” (resolvida) • “Ninguém respondeu sobre a nota errada” (pendente).</div>
+      </div>
+    </div>
+
+    <div class="grid g-2" style="margin-top:16px">
+      <!-- Word Cloud -->
+      <div class="card">
+        <h2>4) Nuvem de Palavras (Reclamações)</h2>
+        <div id="word_cloud" class="cloud">
+          <!-- Gerado por JS com base no dataset abaixo -->
+        </div>
+        <div class="hint">Destaque visual dos termos mais citados em reclamações.</div>
+      </div>
+
+      <!-- Ranking de Causas Raiz -->
+      <div class="card">
+        <h2>5) Ranking de Causas Raiz</h2>
+        <div class="bars" id="bars_root_causes">
+          <!-- Barras geradas por JS -->
+        </div>
+        <div class="hint">Distribuição por categoria (logística, embalagem, pedido/faturamento, preço/condições).</div>
+      </div>
+    </div>
+
+    <!-- Templates de resposta sugeridos -->
+    <div class="grid g-1" style="margin-top:16px">
+      <div class="card">
+        <h2>6) Templates de Resposta Sugeridos</h2>
+
+        <details open>
+          <summary>📦 Atraso na entrega</summary>
+          <p><span class="pill"><i>Meta:</i> Reconhecer, informar novo prazo, prevenir recorrência</span></p>
+          <code>Pedimos desculpas pelo atraso. Já acionamos a transportadora e o novo prazo é [data]. Estamos revisando o processo para evitar recorrência.</code>
+        </details>
+
+        <details>
+          <summary>🧴 Produto avariado</summary>
+          <p><span class="pill"><i>Meta:</i> Validar evidência, repor sem atrito</span></p>
+          <code>Recebemos sua foto, obrigado pelo registro. A reposição será incluída no próximo envio, sem custo adicional.</code>
+        </details>
+
+        <details>
+          <summary>📑 Diferença no pedido</summary>
+          <p><span class="pill"><i>Meta:</i> Corrigir rapidamente, agradecer o aviso</span></p>
+          <code>Identificamos a divergência. Enviaremos os itens faltantes em até [X dias]. Obrigado por nos avisar.</code>
+        </details>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Integração leve com o container do sistema (mantém consistência visual interna)
+    window.addEventListener("load", function() {
+      const elemento = document.querySelector(".widget-container .panel-default");
+      if (elemento) { elemento.style.border = "0px"; }
+    });
+
+    // ====== Data placeholders (poderão ser substituídos por dados reais do backend) ======
+    const datasetCloud = [
+      { t: "atraso", v: 18 }, { t: "avaria", v: 12 }, { t: "validade", v: 9 },
+      { t: "troca", v: 7 }, { t: "faltou", v: 6 }, { t: "nota", v: 5 }, { t: "preço", v: 4 }
+    ];
+
+    const rootCauses = [
+      { cat: "Logística", pct: 40 },
+      { cat: "Embalagem", pct: 25 },
+      { cat: "Pedido/Faturamento", pct: 20 },
+      { cat: "Preço/Condições", pct: 15 }
+    ];
+
+    // ====== Render Word Cloud (simples) ======
+    (function renderCloud(){
+      const el = document.getElementById("word_cloud");
+      if(!el) return;
+      const max = Math.max.apply(null, datasetCloud.map(d=>d.v));
+      datasetCloud.forEach(d => {
+        const w = document.createElement("span");
+        const weight = Math.max(1, Math.round((d.v / max) * 5));
+        w.className = "w";
+        w.dataset.w = String(weight);
+        w.textContent = d.t;
+        el.appendChild(w);
+      });
+    })();
+
+    // ====== Render Root Causes Bars ======
+    (function renderRootCauses(){
+      const wrap = document.getElementById("bars_root_causes");
+      if(!wrap) return;
+      rootCauses.forEach(rc => {
+        const row = document.createElement("div");
+        row.className = "bar";
+
+        const lab = document.createElement("div");
+        lab.className = "lab";
+        lab.textContent = rc.cat;
+
+        const track = document.createElement("div");
+        track.className = "track";
+        const fill = document.createElement("div");
+        fill.className = "fill";
+        fill.style.width = rc.pct + "%";
+        track.appendChild(fill);
+
+        const pct = document.createElement("div");
+        pct.className = "pct";
+        pct.textContent = rc.pct + "%";
+
+        row.appendChild(lab);
+        row.appendChild(track);
+        row.appendChild(pct);
+
+        wrap.appendChild(row);
+      });
+    })();
+
+    // ====== Ajuste da barra de resolvidas conforme valor (placeholder) ======
+    (function syncBars(){
+      const resolvidas = 60; // %
+      const bar = document.getElementById("bar_resolvidas");
+      if(bar){ bar.style.width = resolvidas + "%"; }
+    })();
+  </script>
+
+</div>

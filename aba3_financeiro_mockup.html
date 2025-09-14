@@ -1,0 +1,168 @@
+
+<div id="container_tela" class="container_tela">
+
+  <style>
+    /* ===== Escopo exclusivo ===== */
+    .container_tela { --ink:#0b1324; --muted:#5a6b86; --line:#e8edf5; --card:#ffffff; --bg:#f7f9fc; --pos:#0ea5a0; --warn:#f59e0b; --neg:#ef4444; --info:#3b82f6 }
+    .container_tela { background:var(--bg); padding:18px 0 }
+    .container_tela .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+    .container_tela h1{font:600 20px/1.2 ui-sans-serif,system-ui,Segoe UI,Roboto; color:var(--ink); margin:0 0 8px}
+    .container_tela p.lead{color:var(--muted); margin:0 0 16px}
+
+    /* Grid */
+    .container_tela .grid{display:grid; gap:16px}
+    .container_tela .g-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .container_tela .g-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:1000px){ .container_tela .g-3{grid-template-columns:1fr} .container_tela .g-2{grid-template-columns:1fr} }
+
+    /* Card */
+    .container_tela .card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:0 2px 6px rgba(2,8,23,.03)}
+    .container_tela .card h2{font:600 16px/1.2 ui-sans-serif,system-ui,Segoe UI,Roboto; color:var(--ink); margin:0 0 10px}
+    .container_tela .card .muted{color:var(--muted)}
+    .container_tela .hr{height:1px;background:var(--line);margin:10px 0}
+
+    /* Listas */
+    .container_tela ul.clean{list-style:none; padding:0; margin:0}
+    .container_tela ul.clean li{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line)}
+    .container_tela ul.clean li:last-child{border-bottom:0}
+    .container_tela .tag{font:600 12px/1 ui-sans-serif,system-ui; padding:5px 8px; border-radius:999px; background:#eef2ff; color:#3730a3; white-space:nowrap}
+    .container_tela .count{margin-left:auto; font:700 12px/1 ui-sans-serif; background:#f1f5f9; color:#0b1324; padding:4px 8px; border-radius:8px}
+
+    /* Chips / Badges */
+    .container_tela .chip{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#f1f5f9; color:var(--ink); font:600 12px/1 ui-sans-serif; margin:0 8px 8px 0}
+    .container_tela .chip i{font-style:normal; opacity:.8}
+
+    /* Blocks */
+    .container_tela .block-title{display:flex; align-items:center; gap:8px; margin:0 0 6px}
+    .container_tela .block-title .emoji{font-size:18px}
+    .container_tela .tips{display:flex; flex-wrap:wrap}
+    .container_tela .callout{background:#fefce8; border:1px solid #fde68a; color:#92400e; padding:10px 12px; border-radius:12px; font:500 13px/1.3 ui-sans-serif;}
+
+    /* Footer pointers */
+    .container_tela .bullets{display:grid; gap:8px}
+    .container_tela .bullet{display:flex; gap:8px; align-items:flex-start; font:500 13px/1.3 ui-sans-serif; color:var(--ink)}
+    .container_tela .bullet i{font-style:normal; width:22px; height:22px; display:inline-grid; place-items:center; border-radius:7px; background:#eef2ff; color:#4338ca}
+
+    /* Small helper */
+    .container_tela .mono{font:600 12px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas; background:#f8fafc; border:1px solid var(--line); padding:2px 6px; border-radius:8px}
+  </style>
+
+  <div class="wrap">
+    <h1>💰 Aba 3 — Financeiro</h1>
+    <p class="lead">Resumo prático para o gestor: demandas que consomem o time, gargalos de processo e sinais de risco financeiro (B2B cosméticos).</p>
+
+    <!-- 1. Motivos Mais Frequentes -->
+    <section class="card">
+      <div class="block-title"><span class="emoji">📈</span><h2>1. Motivos Mais Frequentes</h2></div>
+      <ul class="clean">
+        <li><span class="tag">2ª via boleto/nota</span><span class="count">14 menções</span></li>
+        <li><span class="tag">Confirmação de pagamento</span><span class="count">9 menções</span></li>
+        <li><span class="tag">Fatura consolidada</span><span class="count">7 menções</span></li>
+        <li><span class="tag">Renegociação de prazo</span><span class="count">5 menções</span></li>
+      </ul>
+
+      <div class="hr"></div>
+      <div class="grid g-2">
+        <div>
+          <div class="muted" style="margin-bottom:6px; font-weight:600">Exemplos de falas</div>
+          <ul class="clean">
+            <li>“Pode me mandar a segunda via do boleto da nota <span class="mono">4587</span>?”</li>
+            <li>“Já fiz o pagamento ontem, podem confirmar?”</li>
+            <li>“Essa fatura inclui as duas últimas entregas ou só a última?”</li>
+          </ul>
+        </div>
+        <div>
+          <div class="muted" style="margin-bottom:6px; font-weight:600">Sugestões da IA</div>
+          <div class="tips">
+            <span class="chip"><i>🤖</i> Canal automático de 2ª via no WhatsApp</span>
+            <span class="chip"><i>📊</i> Painel de extrato no portal do cliente</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Gargalos Identificados -->
+    <section class="card">
+      <div class="block-title"><span class="emoji">🧩</span><h2>2. Gargalos Identificados</h2></div>
+      <ul class="clean">
+        <li>Muitos clientes pedem documentos pelo WhatsApp → <b>falta de acesso digital</b>.</li>
+        <li>Atrasos no envio de notas/boletos geram recontatos e retrabalho.</li>
+        <li>Condições especiais mal comunicadas → <b>prazos, descontos, juros</b>.</li>
+      </ul>
+
+      <div class="hr"></div>
+      <div class="grid g-2">
+        <div>
+          <div class="muted" style="margin-bottom:6px; font-weight:600">Exemplos de falas</div>
+          <ul class="clean">
+            <li>“Toda vez preciso pedir boleto por aqui, não tem outra forma?”</li>
+            <li>“O desconto de 5% para pagamento antecipado não veio na nota.”</li>
+          </ul>
+        </div>
+        <div>
+          <div class="muted" style="margin-bottom:6px; font-weight:600">Sugestões da IA</div>
+          <div class="tips">
+            <span class="chip"><i>🔗</i> Envio automático de boleto/nota após emissão</span>
+            <span class="chip"><i>🧾</i> Padronizar comunicação financeira no pedido</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Alertas de Risco -->
+    <section class="card">
+      <div class="block-title"><span class="emoji">⚠️</span><h2>3. Alertas de Risco</h2></div>
+      <ul class="clean">
+        <li>Várias conversas sobre atraso → <b>risco de inadimplência</b>.</li>
+        <li>Pedidos frequentes de renegociação → <b>fragilidade de crédito</b>.</li>
+        <li>Divergência entre valor combinado e nota emitida.</li>
+      </ul>
+
+      <div class="callout" style="margin-top:10px">“Se não conseguirem prorrogar esse boleto, não vou conseguir comprar no próximo pedido.”</div>
+    </section>
+
+    <!-- 4. Templates de Resposta Sugeridos -->
+    <section class="card">
+      <div class="block-title"><span class="emoji">✉️</span><h2>4. Templates de Resposta Sugeridos</h2></div>
+      <div class="grid g-2">
+        <div>
+          <div class="muted" style="margin-bottom:6px; font-weight:600">Confirmação de pagamento</div>
+          <div class="tips">
+            <span class="chip"><i>✅</i> “Olá [nome], o pagamento da nota [X] foi confirmado em [data]. Obrigado pelo retorno!”</span>
+          </div>
+        </div>
+        <div>
+          <div class="muted" style="margin-bottom:6px; font-weight:600">Envio de boleto</div>
+          <div class="tips">
+            <span class="chip"><i>🧾</i> “Segue a 2ª via do boleto referente à nota [X], com vencimento em [data]. Caso precise da fatura consolidada, acesse [link/portal].”</span>
+          </div>
+        </div>
+        <div>
+          <div class="muted" style="margin-bottom:6px; font-weight:600">Renegociação</div>
+          <div class="tips">
+            <span class="chip"><i>📅</i> “Entendemos sua necessidade. Nosso setor financeiro pode avaliar extensão de prazo mediante análise de crédito. Encaminhei sua solicitação.”</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visão para o gestor -->
+    <section class="card">
+      <div class="block-title"><span class="emoji">🧭</span><h2>Visão para o gestor</h2></div>
+      <div class="bullets">
+        <div class="bullet"><i>🔍</i><div>Temas financeiros que mais consomem o atendimento.</div></div>
+        <div class="bullet"><i>🚨</i><div>Principais riscos de inadimplência por cliente/carteira.</div></div>
+        <div class="bullet"><i>🛠️</i><div>Falhas de processo: envio de documentos, clareza de condições.</div></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Remoção de borda no container do sistema (compatível com seu padrão)
+    window.addEventListener("load", function() {
+      const elemento = document.querySelector(".widget-container .panel-default");
+      if (elemento) elemento.style.border = "0px";
+    });
+  </script>
+
+</div>
