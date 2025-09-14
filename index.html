@@ -1,0 +1,353 @@
+
+<div id="container_tela" class="container_tela">
+  <style>
+    /* ===== Escopo exclusivo ===== */
+    .container_tela{
+      --ink:#0c1224; --muted:#5b6b83; --line:#e9eef6; --card:#ffffff; --bg:#f7f9fc;
+      --accent:#2563eb; --accentSoft:#e8f0ff; --pos:#0ea5e9; --warn:#f59e0b; --neg:#ef4444;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif;
+      color:var(--ink); background:var(--bg);
+    }
+    .container_tela .wrap{max-width:1200px;margin:0 auto;padding:14px 14px 28px}
+    .container_tela h1{font-size:22px;margin:4px 0 6px;letter-spacing:-.01em}
+    .container_tela .sub{color:var(--muted);font-size:13px;margin-bottom:12px}
+
+    /* Grid */
+    .container_tela .grid{display:grid;gap:16px}
+    .container_tela .g-3{grid-template-columns:2fr 1.1fr 1.1fr}
+    .container_tela .g-2{grid-template-columns:1fr 1fr}
+    .container_tela .g-1{grid-template-columns:1fr}
+    @media (max-width:1100px){.container_tela .g-3,.container_tela .g-2{grid-template-columns:1fr}}
+
+    /* Cards */
+    .container_tela .card{
+      background:var(--card); border:1px solid var(--line); border-radius:16px;
+      box-shadow:0 8px 24px rgba(12,18,36,.05); padding:16px;
+    }
+    .container_tela .card h3{font-size:15px;margin:0 0 10px}
+    .container_tela .hint{font-size:12px;color:var(--muted)}
+    .container_tela .hr{height:1px;background:var(--line);margin:10px 0}
+
+    /* Bars */
+    .container_tela .bars{display:grid;gap:8px;margin-top:6px}
+    .container_tela .barrow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px}
+    .container_tela .barwrap{
+      background:#f0f4fa;border:1px solid var(--line);border-radius:999px;overflow:hidden;height:12px;
+    }
+    .container_tela .bar{height:12px;background:linear-gradient(90deg,var(--accent),#9ec4ff);width:0}
+    .container_tela .pill{
+      font-size:12px;padding:.28rem .6rem;border-radius:999px;background:#fff;border:1px solid var(--line);
+      box-shadow:0 1px 1px rgba(0,0,0,.02);
+    }
+
+    /* Quotes */
+    .container_tela .quotes{max-height:180px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:10px;background:#fcfdff}
+    .container_tela .q{display:flex;gap:8px;padding:8px 4px;border-bottom:1px dashed var(--line);font-size:13px}
+    .container_tela .q:last-child{border-bottom:0}
+    .container_tela .q i{opacity:.55}
+
+    /* Word cloud */
+    .container_tela .cloud{position:relative;min-height:220px;border:1px dashed var(--line);border-radius:12px;overflow:hidden;background:#fff}
+    .container_tela .cloud span{position:absolute;white-space:nowrap;line-height:1}
+
+    /* KPI small chips */
+    .container_tela .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .container_tela .chip{background:var(--accentSoft); color:#123; border:1px solid #dbe7ff; border-radius:999px; padding:.3rem .6rem; font-size:12px}
+
+    /* AI suggestions */
+    .container_tela .ai{display:flex;gap:10px;align-items:flex-start;background:#f5fbff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}
+    .container_tela .ai i{opacity:.65}
+
+    /* Problem KPIs */
+    .container_tela .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .container_tela .kpi{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}
+    .container_tela .kpi .lbl{font-size:12px;color:var(--muted)}
+    .container_tela .kpi .val{font-weight:700;margin-top:2px}
+
+    /* Legend dots */
+    .container_tela .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+    .container_tela .d-pos{background:#10b981}
+    .container_tela .d-neu{background:#94a3b8}
+    .container_tela .d-neg{background:#ef4444}
+
+    /* Section header */
+    .container_tela .section-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .container_tela .section-head .legend{font-size:12px;color:var(--muted)}
+  </style>
+
+  <!-- ===== Mock de dados B2B Cosméticos ===== -->
+  <script>
+    window.cockpitVendas = {
+      oportunidades: {
+        produtos: [
+          {label:"Batom Matte 24h (Linha Pro)", value:38, pos:60, neu:25, neg:15},
+          {label:"Creme Oil-Free 200ml", value:27, pos:72, neu:18, neg:10},
+          {label:"Sérum Anti-Idade 30ml", value:21, pos:48, neu:22, neg:30}
+        ],
+        frases:[
+          "O Batom Matte 24h sai bem, mas preciso mix de cores mais enxuto para começar.",
+          "Tem Creme Oil-Free em 200ml? A de 100ml gira, mas o cliente pede maior."
+        ],
+        sugestoes:[
+          "Criar kit de entrada do Batom (top 8 cores) com desconto progressivo + brinde de PDV.",
+          "Exibir variante 200ml do Creme Oil-Free como produto-âncora nas propostas B2B."
+        ],
+        cloud:[
+          {text:"gira rápido", weight:16},
+          {text:"mix de cores", weight:14},
+          {text:"desconto progressivo", weight:12},
+          {text:"ruptura", weight:11},
+          {text:"kit PDV", weight:10},
+          {text:"amostra 5ml", weight:9},
+          {text:"concorrente X", weight:8},
+          {text:"combo", weight:8},
+          {text:"200ml", weight:7},
+          {text:"margin", weight:7},
+          {text:"display", weight:6}
+        ]
+      },
+      elogios: {
+        pontos:[
+          {label:"Gira no ponto de venda (Batom)", value:14},
+          {label:"Textura leve, não oleosa (Creme)", value:10},
+          {label:"Material de PDV ajuda a vender", value:6}
+        ],
+        frases:[
+          "O Creme Oil-Free tem saída constante; quando divulgo no balcão, vende no mesmo dia."
+        ],
+        sugestoes:[
+          "Usar argumento padrão 'Alta rotação + reposição rápida' para Batom.",
+          "Incluir kit PDV básico nas primeiras compras do Creme."
+        ]
+      },
+      objecoes: {
+        itens:[
+          {label:"Margem de revenda apertada", value:10},
+          {label:"Ruptura / falta de cor (Batom)", value:6},
+          {label:"Preço percebido alto (Sérum)", value:9},
+          {label:"Prazo de entrega", value:5}
+        ],
+        frases:["O Sérum fica caro pra minha praça; sem amostra ele não gira."],
+        sugestoes:[
+          "Template de margem com degraus: 8/12/16 itens.",
+          "Plano de reposição automática por cor (alerta quinzenal).",
+          "Amostra do Sérum + display pequeno de balcão."
+        ]
+      },
+      concorrentes: {
+        itens:[
+          {label:"Distribuidora X (combo batons)", value:8},
+          {label:"Marca Y (sérum com mini-amostra)", value:5}
+        ],
+        frases:["A Distribuidora X está oferecendo combo de batons com 20% a mais de desconto."],
+        sugestoes:["Counter-offer: pacote 'Top Cores' com degraus + brinde de PDV.", "Para o Sérum, mini-amostra 5ml + folheto comparativo."]
+      },
+      problemas: {
+        kpis:[
+          {label:"Produto em falta — cores quentes (Batom)", value:4},
+          {label:"Sem combo com sabonete (Creme)", value:3},
+          {label:"Sem material para exposição", value:3},
+          {label:"Política de troca pouco clara (Sérum)", value:2}
+        ],
+        sugestoes:[
+          "Pré-reserva de cores quentes + reposição quinzenal.",
+          "Bundle: Creme Oil-Free + Sabonete Facial com visual de gôndola.",
+          "Kit PDV básico incluso no primeiro pedido do Sérum.",
+          "Política de giro: troca parcial após 60 dias."
+        ]
+      }
+    };
+  </script>
+
+  <div class="wrap">
+    <h1>🟢 Cockpit do Gestor — Aba 1: Vendas (Cosméticos B2B)</h1>
+    <div class="sub">Voz do lojista a partir das conversas (WhatsApp e outros canais) • Atualização diária</div>
+
+    <!-- Linha 1 -->
+    <div class="grid g-3">
+      <!-- Oportunidades -->
+      <div class="card" id="card_oportunidades">
+        <div class="section-head">
+          <h3>🔹 Oportunidades — Produtos mais citados</h3>
+          <div class="legend">
+            <span class="dot d-pos"></span>Positivo
+            <span class="dot d-neu" style="margin-left:10px"></span>Neutro
+            <span class="dot d-neg" style="margin-left:10px"></span>Negativo
+          </div>
+        </div>
+        <div id="bars_oportunidades" class="bars"></div>
+        <div class="chips" id="sent_oportunidades"></div>
+        <div class="hr"></div>
+        <div class="hint">Frases reais (lojistas)</div>
+        <div class="quotes" id="quotes_oportunidades"></div>
+        <div class="ai"><i>💡</i><div id="ai_oportunidades"></div></div>
+      </div>
+
+      <!-- Cloud -->
+      <div class="card">
+        <h3>🔤 Nuvem de Palavras (associações recorrentes)</h3>
+        <div id="cloud_oportunidades" class="cloud"></div>
+        <div class="hint">Tamanho = frequência nas conversas</div>
+      </div>
+
+      <!-- Elogios -->
+      <div class="card">
+        <h3>🏅 Elogios / Pontos Fortes</h3>
+        <ul class="bars" id="elogios_lista"></ul>
+        <div class="hr"></div>
+        <div class="hint">Frase real</div>
+        <div class="quotes" id="elogios_quotes"></div>
+        <div class="ai"><i>💡</i><div id="ai_elogios"></div></div>
+      </div>
+    </div>
+
+    <!-- Linha 2 -->
+    <div class="grid g-2" style="margin-top:14px">
+      <!-- Objeções -->
+      <div class="card">
+        <h3>🛑 Objeções mais comuns</h3>
+        <div id="bars_objeicoes" class="bars"></div>
+        <div class="hr"></div>
+        <div class="quotes" id="objeicoes_quotes"></div>
+        <div class="ai"><i>💡</i><div id="ai_objeicoes"></div></div>
+      </div>
+
+      <!-- Concorrentes -->
+      <div class="card">
+        <h3>⚔️ Menções de Concorrentes</h3>
+        <div id="bars_concorrentes" class="bars"></div>
+        <div class="hr"></div>
+        <div class="quotes" id="concorrentes_quotes"></div>
+        <div class="ai"><i>💡</i><div id="ai_concorrentes"></div></div>
+      </div>
+    </div>
+
+    <!-- Linha 3 -->
+    <div class="grid g-1" style="margin-top:14px">
+      <div class="card">
+        <h3>⚠️ Problemas relatados em negociação</h3>
+        <div class="kpis" id="problemas_kpis"></div>
+        <div class="ai"><i>💡</i><div id="ai_problemas"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Legado: remover borda .panel-default se existir
+    window.addEventListener("load", function() {
+      const el = document.querySelector(".widget-container .panel-default");
+      if (el) el.style.border = "0";
+    });
+
+    function $(id){return document.getElementById(id)}
+
+    function renderBars(elId, data){
+      const el = $(elId); if(!el) return;
+      const max = Math.max(...data.map(d=>d.value), 1);
+      el.innerHTML = data.map(d=>{
+        const pct = Math.round((d.value/max)*100);
+        return `<div class="barrow">
+          <div class="barwrap"><div class="bar" style="width:${pct}%"></div></div>
+          <div class="pill">${d.label} • <b>${d.value}</b></div>
+        </div>`
+      }).join("");
+    }
+
+    function renderChipsSent(elId, data){
+      const el = $(elId); if(!el) return;
+      el.innerHTML = data.map(d=>`
+        <span class="chip">${d.label.split(" (")[0]} • 
+          <span class="dot d-pos"></span>${d.pos}% 
+          <span class="dot d-neu" style="margin-left:8px"></span>${d.neu}% 
+          <span class="dot d-neg" style="margin-left:8px"></span>${d.neg}%
+        </span>`).join("");
+    }
+
+    function renderQuotes(elId, arr){
+      const el = $(elId); if(!el) return;
+      el.innerHTML = arr.map(t=>`<div class="q"><i>“</i><div>${t}</div></div>`).join("");
+    }
+
+    function renderBullets(elId, arr){
+      const el = $(elId); if(!el) return;
+      el.innerHTML = `<ul class="bars" style="gap:6px">${arr.map(t=>`
+        <li class="barrow" style="grid-template-columns:1fr"><div>${t.label || t}</div></li>`).join("")}</ul>`;
+    }
+
+    function renderListAsBars(elId, arr){
+      const el = $(elId); if(!el) return;
+      const max = Math.max(...arr.map(a=>a.value),1);
+      el.innerHTML = arr.map(a=>{
+        const pct = Math.round( (a.value/max)*100 );
+        return `<li class="barrow">
+          <div class="barwrap"><div class="bar" style="width:${pct}%"></div></div>
+          <div class="pill">${a.label} • <b>${a.value}</b></div>
+        </li>`;
+      }).join("");
+    }
+
+    function renderCloud(elId, words){
+      const el = $(elId); if(!el) return;
+      el.innerHTML = '';
+      const rect = el.getBoundingClientRect();
+      const placed = [];
+      const maxW = Math.max(...words.map(w=>w.weight));
+      const minFont = 12, maxFont = 42;
+      function collides(a,b){return !(a.x+a.w<b.x || b.x+b.w<a.x || a.y+a.h<b.y || b.y+b.h<a.y)}
+      words.sort((a,b)=>b.weight-a.weight).forEach(w=>{
+        const size = Math.round(minFont + (w.weight/maxW)*(maxFont-minFont));
+        const span = document.createElement('span');
+        span.textContent = w.text;
+        span.style.fontSize = size+'px';
+        span.style.opacity = String(0.55 + 0.45*(w.weight/maxW));
+        span.style.color = '#233';
+        el.appendChild(span);
+        const sw = span.offsetWidth, sh = span.offsetHeight;
+        let tries=0, ok=false, x=0, y=0;
+        while(tries<240 && !ok){
+          x = Math.max(6, Math.floor(Math.random()*(rect.width - sw - 12)));
+          y = Math.max(6, Math.floor(Math.random()*(rect.height - sh - 12)));
+          const box = {x,y,w:sw,h:sh};
+          ok = placed.every(p=>!collides(box,p));
+          if(ok){placed.push(box); span.style.left=x+'px'; span.style.top=y+'px'}
+          tries++;
+        }
+        if(!ok){span.style.left='8px'; span.style.top=(8+placed.length*(sh+4))+'px'}
+      });
+    }
+
+    // ===== Render =====
+    const D = window.cockpitVendas;
+
+    // Oportunidades
+    renderBars('bars_oportunidades', D.oportunidades.produtos);
+    renderChipsSent('sent_oportunidades', D.oportunidades.produtos);
+    renderQuotes('quotes_oportunidades', D.oportunidades.frases);
+    renderBullets('ai_oportunidades', D.oportunidades.sugestoes);
+    renderCloud('cloud_oportunidades', D.oportunidades.cloud);
+
+    // Elogios
+    renderListAsBars('elogios_lista', D.elogios.pontos);
+    renderQuotes('elogios_quotes', D.elogios.frases);
+    renderBullets('ai_elogios', D.elogios.sugestoes);
+
+    // Objeções
+    renderBars('bars_objeicoes', D.objecoes.itens);
+    renderQuotes('objeicoes_quotes', D.objecoes.frases);
+    renderBullets('ai_objeicoes', D.objecoes.sugestoes);
+
+    // Concorrentes
+    renderBars('bars_concorrentes', D.concorrentes.itens);
+    renderQuotes('concorrentes_quotes', D.concorrentes.frases);
+    renderBullets('ai_concorrentes', D.concorrentes.sugestoes);
+
+    // Problemas
+    $('problemas_kpis').innerHTML = D.problemas.kpis.map(k=>`
+      <div class="kpi">
+        <div class="lbl">${k.label}</div>
+        <div class="val">${k.value}</div>
+      </div>
+    `).join('');
+    renderBullets('ai_problemas', D.problemas.sugestoes);
+  </script>
+</div>
