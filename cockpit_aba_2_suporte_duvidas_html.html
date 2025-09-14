@@ -1,0 +1,287 @@
+<div id="container_tela" class="container_tela">
+  <style>
+    /* ===== Escopo exclusivo do cockpit dentro de #container_tela ===== */
+    .container_tela { --ink:#0b1324; --muted:#5b6b82; --line:#e8edf5; --card:#ffffff; --bg:#f7f9fc; --pos:#16a34a; --neg:#ef4444; --brand:#2952ff }
+
+    .container_tela .wrap{max-width:1160px;margin:0 auto;padding:18px}
+    .container_tela .hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .container_tela .hdr h1{font-size:18px;font-weight:700;color:var(--ink);margin:0}
+    .container_tela .hdr .hint{font-size:12px;color:var(--muted)}
+
+    .container_tela .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 16px}
+    .container_tela .pill{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12px;color:var(--ink)}
+    .container_tela .pill input,.container_tela .pill select{border:0;outline:0;background:transparent;font-size:12px;color:var(--ink)}
+    .container_tela .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:#fff;font-size:12px;color:var(--ink);cursor:pointer}
+    .container_tela .btn.primary{background:var(--brand);color:#fff;border-color:transparent}
+    .container_tela .btn:active{transform:translateY(1px)}
+
+    .container_tela .grid{display:grid;gap:14px}
+    .container_tela .g-3{grid-template-columns:2fr 1.6fr 1.4fr}
+    @media (max-width:1000px){ .container_tela .g-3{grid-template-columns:1fr} }
+
+    .container_tela .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}
+    .container_tela .card h2{font-size:14px;color:var(--ink);margin:0 0 10px}
+    .container_tela .card .sub{font-size:12px;color:var(--muted);margin:0 0 8px}
+
+    .container_tela .list{display:grid;gap:8px}
+    .container_tela .row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 10px;border:1px dashed var(--line);border-radius:12px;background:#fbfcff}
+    .container_tela .row .topic{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink)}
+    .container_tela .row .count{font-weight:700;font-size:12px;color:var(--ink);background:#eef2ff;border-radius:999px;padding:4px 8px}
+    .container_tela .row .badge{font-size:11px;color:#334155;background:#e2e8f0;border-radius:10px;padding:3px 8px}
+
+    .container_tela .talks{display:grid;gap:8px}
+    .container_tela .bubble{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff}
+    .container_tela .bubble .who{font-size:11px;color:var(--muted);margin-bottom:6px}
+    .container_tela .bubble p{margin:0;font-size:13px;color:var(--ink)}
+
+    .container_tela .template{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fcfdfd}
+    .container_tela .template .label{font-size:11px;color:var(--muted);margin-bottom:6px}
+    .container_tela .template code{display:block;font-size:12px;white-space:pre-wrap;color:#0f172a}
+
+    .container_tela .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 12px}
+    .container_tela .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+    .container_tela .kpi .t{font-size:11px;color:var(--muted)}
+    .container_tela .kpi .v{font-size:18px;font-weight:800;color:var(--ink)}
+    .container_tela .kpi .trend{font-size:11px}
+    .container_tela .trend.up{color:var(--pos)}
+    .container_tela .trend.down{color:var(--neg)}
+
+    .container_tela .foot-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  </style>
+
+  <div class="wrap">
+    <div class="hdr">
+      <h1>📘 Aba 2 — Suporte / Dúvidas</h1>
+      <span class="hint" id="periodo_label">Últimos 7 dias</span>
+    </div>
+
+    <!-- KPIs rápidos da aba -->
+    <div class="kpis">
+      <div class="kpi">
+        <div class="t">Dúvidas legítimas</div>
+        <div class="v" id="kpi_duvidas">25</div>
+        <div class="trend up" id="kpi_duvidas_trend">+12% vs. período anterior</div>
+      </div>
+      <div class="kpi">
+        <div class="t">Gargalos processuais</div>
+        <div class="v" id="kpi_gargalos">14</div>
+        <div class="trend down" id="kpi_gargalos_trend">−8% após FAQ</div>
+      </div>
+      <div class="kpi">
+        <div class="t">Templates usados</div>
+        <div class="v" id="kpi_templates">38</div>
+        <div class="trend up" id="kpi_templates_trend">+22% (ganho de tempo)</div>
+      </div>
+      <div class="kpi">
+        <div class="t">Tempo médio de resposta</div>
+        <div class="v" id="kpi_tmr">6m 40s</div>
+        <div class="trend down" id="kpi_tmr_trend">−1m 15s</div>
+      </div>
+    </div>
+
+    <!-- Filtros / Toolbar -->
+    <div class="toolbar">
+      <div class="pill"><span>Período:</span>
+        <select id="f_periodo">
+          <option>Últimos 7 dias</option>
+          <option>Últimos 14 dias</option>
+          <option>Últimos 30 dias</option>
+          <option>Este mês</option>
+        </select>
+      </div>
+      <div class="pill"><span>Canal:</span>
+        <select id="f_canal">
+          <option>WhatsApp</option>
+          <option>E-mail</option>
+          <option>Telefone</option>
+        </select>
+      </div>
+      <div class="pill"><span>Time:</span>
+        <select id="f_time">
+          <option>Todos</option>
+          <option>Comercial</option>
+          <option>CS / Suporte</option>
+          <option>Financeiro</option>
+        </select>
+      </div>
+      <button class="btn" id="btn_export_faq">Exportar FAQ</button>
+      <button class="btn primary" id="btn_criar_templates">Gerar Templates da Semana</button>
+    </div>
+
+    <div class="grid g-3">
+      <!-- Coluna 1: Dúvidas Mais Frequentes (legítimas) -->
+      <section class="card">
+        <h2>🔹 1. Dúvidas Mais Frequentes (legítimas)</h2>
+        <p class="sub">Questões normais e recorrentes do dia a dia do cliente</p>
+        <div class="list" id="duvidas_legitimas">
+          <!-- Preenchido via JS ou fallback abaixo -->
+          <div class="row">
+            <div class="topic">Validade e lote de produtos</div>
+            <span class="count">11</span>
+          </div>
+          <div class="row">
+            <div class="topic">Procedimentos de troca/devolução</div>
+            <span class="count">8</span>
+          </div>
+          <div class="row">
+            <div class="topic">Aplicação correta de promoções</div>
+            <span class="count">6</span>
+          </div>
+        </div>
+        <div class="talks" style="margin-top:10px">
+          <div class="bubble">
+            <div class="who">Cliente varejista</div>
+            <p>“Esse lote do <b>Shampoo Nutri-Hair</b> vence em 3 meses ou 6 meses?”</p>
+          </div>
+          <div class="bubble">
+            <div class="who">Cliente varejista</div>
+            <p>“Se chegar uma caixa com frasco quebrado, como devo proceder?”</p>
+          </div>
+          <div class="bubble">
+            <div class="who">Cliente varejista</div>
+            <p>“A promoção do <b>Kit Hidratante Premium</b> é cumulativa com desconto de volume?”</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Coluna 2: Gargalos Identificados (processuais) -->
+      <section class="card">
+        <h2>🔹 2. Gargalos Identificados (processuais)</h2>
+        <p class="sub">Temas que geram atrito por informação insuficiente ou dispersa</p>
+        <div class="list" id="gargalos">
+          <div class="row">
+            <div class="topic">Consulta de estoque (sem visibilidade para o cliente)</div>
+            <span class="badge">prioridade</span>
+          </div>
+          <div class="row">
+            <div class="topic">Pedido mínimo (valor/unidades para faturamento)</div>
+            <span class="badge">recorrente</span>
+          </div>
+          <div class="row">
+            <div class="topic">Política de frete e promoções (regras por região)</div>
+            <span class="badge">recorrente</span>
+          </div>
+        </div>
+        <div class="talks" style="margin-top:10px">
+          <div class="bubble">
+            <div class="who">Cliente varejista</div>
+            <p>“Preciso saber se vocês têm 200 unidades do <b>Sabonete Premium</b> antes de fechar o pedido.”</p>
+          </div>
+          <div class="bubble">
+            <div class="who">Cliente varejista</div>
+            <p>“Qual é mesmo o pedido mínimo para conseguir frete grátis?”</p>
+          </div>
+          <div class="bubble">
+            <div class="who">Cliente varejista</div>
+            <p>“A promoção do <b>Kit Revitalizante</b> vale para qualquer região ou só para SP?”</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Coluna 3: Templates de Resposta Sugeridos -->
+      <section class="card">
+        <h2>🔹 3. Templates de Resposta Sugeridos</h2>
+        <p class="sub">Respostas prontas para salvar no CRM e acelerar o atendimento</p>
+        <div class="template" style="margin-bottom:8px">
+          <div class="label">Validade / Lotes</div>
+          <code>Olá [nome], o produto [X] do lote [Y] tem validade até [data]. Trabalhamos com [Z meses] de prazo mínimo para giro no PDV.</code>
+        </div>
+        <div class="template" style="margin-bottom:8px">
+          <div class="label">Troca de avaria</div>
+          <code>Caso receba uma caixa com avaria, basta enviar foto da mercadoria e nota em até 48h. Reporíamos no próximo envio sem custo.</code>
+        </div>
+        <div class="template">
+          <div class="label">Pedido mínimo</div>
+          <code>Nosso pedido mínimo é de [valor/unidades]. Para complementar, sugerimos incluir itens de giro rápido, como [Produto A / Produto B].</code>
+        </div>
+        <div class="foot-actions">
+          <button class="btn" id="btn_salvar_crm">Salvar todos no CRM</button>
+          <button class="btn" id="btn_editar_templates">Editar</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Requisito legado (ajuste de borda em alguns temas):
+    window.addEventListener("load", function() {
+      const elemento = document.querySelector(".widget-container .panel-default");
+      if (elemento) { elemento.style.border = "0px"; }
+    });
+
+    // ===== Placeholders opcionais (se seu backend injetar JSON, preencheremos a UI) =====
+    // Exemplo de payload esperado (substitua por dados reais do seu CRM):
+    const payload = window.__SUPORTE_ABA2__ || {
+      periodo: "Últimos 7 dias",
+      kpis: { duvidas:25, duvidas_trend:"+12% vs. período anterior", gargalos:14, gargalos_trend:"−8% após FAQ", templates:38, templates_trend:"+22% (ganho de tempo)", tmr:"6m 40s", tmr_trend:"−1m 15s" },
+      top_duvidas: [
+        { assunto: "Validade e lote de produtos", qtd: 11 },
+        { assunto: "Procedimentos de troca/devolução", qtd: 8 },
+        { assunto: "Aplicação correta de promoções", qtd: 6 }
+      ],
+      gargalos: [
+        { assunto: "Consulta de estoque (sem visibilidade para o cliente)", tag: "prioridade" },
+        { assunto: "Pedido mínimo (valor/unidades para faturamento)", tag: "recorrente" },
+        { assunto: "Política de frete e promoções (regras por região)", tag: "recorrente" }
+      ],
+      templates: {
+        validade: "Olá [nome], o produto [X] do lote [Y] tem validade até [data]. Trabalhamos com [Z meses] de prazo mínimo para giro no PDV.",
+        avaria: "Caso receba uma caixa com avaria, basta enviar foto da mercadoria e nota em até 48h. Reporíamos no próximo envio sem custo.",
+        pedido_min: "Nosso pedido mínimo é de [valor/unidades]. Para complementar, sugerimos incluir itens de giro rápido, como [Produto A / Produto B]."
+      }
+    };
+
+    // Bind básico
+    (function bindUI(d){
+      const $ = sel => document.querySelector(sel);
+      $("#periodo_label").textContent = d.periodo;
+      $("#kpi_duvidas").textContent = d.kpis.duvidas;
+      $("#kpi_duvidas_trend").textContent = d.kpis.duvidas_trend;
+      $("#kpi_gargalos").textContent = d.kpis.gargalos;
+      $("#kpi_gargalos_trend").textContent = d.kpis.gargalos_trend;
+      $("#kpi_templates").textContent = d.kpis.templates;
+      $("#kpi_templates_trend").textContent = d.kpis.templates_trend;
+      $("#kpi_tmr").textContent = d.kpis.tmr;
+      $("#kpi_tmr_trend").textContent = d.kpis.tmr_trend;
+
+      const list1 = document.getElementById("duvidas_legitimas");
+      if (list1 && d.top_duvidas){
+        list1.innerHTML = d.top_duvidas.map(x => `
+          <div class="row">
+            <div class="topic">${x.assunto}</div>
+            <span class="count">${x.qtd}</span>
+          </div>`).join("");
+      }
+
+      const list2 = document.getElementById("gargalos");
+      if (list2 && d.gargalos){
+        list2.innerHTML = d.gargalos.map(x => `
+          <div class="row">
+            <div class="topic">${x.assunto}</div>
+            <span class="badge">${x.tag}</span>
+          </div>`).join("");
+      }
+
+      // Templates (se quiser sobrescrever via payload)
+      const tpl = d.templates || {};
+      const blocks = document.querySelectorAll(".template code");
+      if (blocks[0] && tpl.validade) blocks[0].textContent = tpl.validade;
+      if (blocks[1] && tpl.avaria) blocks[1].textContent = tpl.avaria;
+      if (blocks[2] && tpl.pedido_min) blocks[2].textContent = tpl.pedido_min;
+    })(payload);
+
+    // Ações (placeholders)
+    document.getElementById('btn_export_faq')?.addEventListener('click', ()=>{
+      alert('Exportar FAQ: geramos um .csv com tópicos, contagens e exemplos.');
+    });
+    document.getElementById('btn_criar_templates')?.addEventListener('click', ()=>{
+      alert('Gerar Templates: IA sugere e salva rascunhos no CRM.');
+    });
+    document.getElementById('btn_salvar_crm')?.addEventListener('click', ()=>{
+      alert('Templates salvos no CRM com sucesso.');
+    });
+    document.getElementById('btn_editar_templates')?.addEventListener('click', ()=>{
+      alert('Abrindo editor de templates...');
+    });
+  </script>
+</div>
