@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cockpit — Resumo Executivo (Semana) • Visual Reimaginado</title>
+  <style>
+    :root{
+      --bg:#f6f8fb; --card:#ffffff; --ink:#0b1324; --muted:#5a6a84; --line:#e5eaf3;
+      --accent:#2563eb; --accent-2:#a78bfa; --pos:#16a34a; --neg:#dc2626; --warn:#f59e0b;
+      --radius:18px; --radius-sm:14px; --shadow:0 10px 30px rgba(15, 23, 42, .12);
+      --shadow-sm:0 6px 18px rgba(15, 23, 42, .06);
+    }
+    [data-theme="dark"]{
+      --bg:#0b1220; --card:#0f172a; --ink:#e6edf7; --muted:#9fb0c9; --line:#24324a;
+      --accent:#5aa2ff; --accent-2:#9da5ff; --shadow:0 16px 38px rgba(0,0,0,.45);
+      --shadow-sm:0 10px 24px rgba(0,0,0,.28);
+    }
+    html,body{margin:0;background:var(--bg);color:var(--ink);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+    #container_tela.container_tela{max-width:1180px;margin:0 auto;padding:28px}
+
+    /* Hero */
+    .hero{display:grid;gap:20px;align-items:center;grid-template-columns:1fr auto;margin-bottom:8px}
+    .hero .title-block{display:grid;gap:8px}
+    h1{font-size:28px;margin:0}
+    .subtitle{color:var(--muted);margin:0;font-size:14px}
+    .badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.55));
+      border:1px solid var(--line); color:var(--muted); padding:6px 12px;border-radius:999px; box-shadow:var(--shadow-sm)}
+    [data-theme="dark"] .badge{background:linear-gradient(180deg, rgba(28,36,54,.6), rgba(28,36,54,.35))}
+    .hero-cta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .btn{appearance:none;border:1px solid var(--line); background:var(--accent); color:#fff; border-radius:12px;
+      padding:10px 14px; font-weight:700; cursor:pointer; box-shadow:var(--shadow-sm)}
+    .btn.link{background:transparent;color:var(--accent);font-weight:700}
+
+    .toggle{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line); padding:6px 10px;border-radius:999px;background:var(--card);box-shadow:var(--shadow-sm)}
+    .switch{position:relative;display:inline-block;width:46px;height:26px}
+    .switch input{display:none}
+    .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#d1d5db;border-radius:999px;transition:.2s}
+    .slider:before{content:"";position:absolute;height:20px;width:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+    input:checked + .slider{background:#111827}
+    input:checked + .slider:before{transform:translateX(20px)}
+
+    /* GRID utilitário */
+    .grid{display:grid;gap:16px}
+    .g-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    @media (max-width:1024px){.g-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:640px){.g-4{grid-template-columns:1fr}}
+
+    /* Cards seção 2 — redesign */
+    .section-title{font-size:18px;margin:22px 0 12px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+    .card:before{content:"";position:absolute;inset:auto -40px -40px auto;width:140px;height:140px;border-radius:50%;
+      background:radial-gradient(closest-side, rgba(37,99,235,.12), transparent 70%);filter:blur(10px);pointer-events:none}
+    .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .card-title{font-size:14px;color:var(--muted)}
+    .open-pill{font-size:12px;border:1px solid #d7e3ff;background:#f6faff;color:var(--accent);border-radius:999px;padding:4px 10px}
+
+    .kpi{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
+    .kpi .num{font-size:32px;font-weight:900;letter-spacing:.2px}
+    .kpi .pct{font-size:13px;color:var(--muted)}
+
+    /* Itens como "chips de métrica" com hierarquia clara */
+    .metric{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.75)); border-radius:12px}
+    .metric .label{display:flex;align-items:center;gap:10px}
+    .dot{width:6px;height:6px;border-radius:50%;background:#c9d3ea}
+    .metric strong{font-size:15px}
+    .metric .pct{font-size:12px;color:var(--muted)}
+
+    .stack{display:grid;gap:10px}
+
+    /* badges auxiliares por tipo (cores suaves) */
+    .tag{font-size:11px;border:1px solid var(--line);color:var(--muted);background:#fff;border-radius:999px;padding:2px 8px}
+    .tag.pos{color:var(--pos);background:rgba(22,163,74,.06);border-color:rgba(22,163,74,.25)}
+    .tag.warn{color:#8a5a00;background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.25)}
+    .tag.neg{color:var(--neg);background:rgba(220,38,38,.08);border-color:rgba(220,38,38,.25)}
+  </style>
+</head>
+<body>
+<div id="container_tela" class="container_tela">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="title-block">
+      <h1>Resumo Executivo — WhatsApp & Vendas (Semana)</h1>
+      <p class="subtitle">Distribuição das conversas, conversas que viraram pedidos e reclamações recentes.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="badge">Semana atual · <strong>Seg–Dom</strong></span>
+        <span class="badge">Atualizado há <strong>5 min</strong></span>
+      </div>
+    </div>
+    <div class="hero-cta">
+      <button class="btn">Exportar PDF</button>
+      <a class="btn link" href="https://phj1976.github.io/html/cockpit_do_gestor_aba_1_vendas.html" target="_blank" rel="noopener">Ver detalhes</a>
+      <div class="toggle">
+        <span class="subtitle">Tema</span>
+        <label class="switch">
+          <input id="toggler" type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAIXA 1 (RIBBON) REMOVIDA -->
+
+  <!-- FAIXA 2 — Distribuição das conversas (mesmo conteúdo, visual repensado) -->
+  <h2 class="section-title">Distribuição das conversas</h2>
+  <div class="grid g-4">
+    <!-- VENDAS -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Vendas</span>
+        <a class="open-pill" href="https://phj1976.github.io/html/cockpit_do_gestor_aba_1_vendas.html" target="_blank" rel="noopener">abrir</a>
+      </div>
+      <div class="kpi">
+        <div class="num" id="num_vendas">152</div>
+        <div class="pct" id="pct_vendas">40%</div>
+      </div>
+      <div class="stack">
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Efetivadas em pedidos</span></div>
+          <div><strong>68</strong> <span class="pct">(45%)</span></div>
+        </div>
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Em negociação</span></div>
+          <div><strong>54</strong> <span class="pct">(36%)</span></div>
+        </div>
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Perdidas / não avançaram</span></div>
+          <div><strong>30</strong> <span class="pct">(19%)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUPORTE / DÚVIDAS -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Suporte / Dúvidas</span>
+        <a class="open-pill" href="https://phj1976.github.io/html/cockpit_aba_2_suporte_duvidas_html.html" target="_blank" rel="noopener">abrir</a>
+      </div>
+      <div class="kpi">
+        <div class="num" id="num_suporte">114</div>
+        <div class="pct" id="pct_suporte">30%</div>
+      </div>
+      <div class="stack">
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Resolvidas no 1º contato</span> <span class="tag pos">↑ eficiência</span></div>
+          <div><strong>72</strong> <span class="pct">(63%)</span></div>
+        </div>
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Reincidentes</span></div>
+          <div><strong>22</strong> <span class="pct">(19%)</span></div>
+        </div>
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Pendentes</span> <span class="tag warn">atenção</span></div>
+          <div><strong>20</strong> <span class="pct">(18%)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINANCEIRO -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Financeiro</span>
+        <a class="open-pill" href="https://phj1976.github.io/html/aba3_financeiro_mockup.html" target="_blank" rel="noopener">abrir</a>
+      </div>
+      <div class="kpi">
+        <div class="num" id="num_fin">76</div>
+        <div class="pct" id="pct_fin">20%</div>
+      </div>
+      <div class="stack">
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Pagamentos confirmados</span></div>
+          <div><strong>41</strong></div>
+        </div>
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Negociações de prazo</span></div>
+          <div><strong>15</strong></div>
+        </div>
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Pendências críticas</span> <span class="tag neg">risco</span></div>
+          <div><strong>8</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECLAMAÇÕES -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Reclamações</span>
+        <a class="open-pill" href="https://phj1976.github.io/html/aba4_reclamacoes_mockup.html" target="_blank" rel="noopener">abrir</a>
+      </div>
+      <div class="kpi">
+        <div class="num" id="num_rec">38</div>
+        <div class="pct" id="pct_rec">10%</div>
+      </div>
+      <div class="stack">
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Resolvidas</span></div>
+          <div><strong>22</strong></div>
+        </div>
+        <div class="metric">
+          <div class="label"><span class="dot"></span><span>Não resolvidas</span> <span class="tag neg">priorizar</span></div>
+          <div><strong>16</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2) Conversas que viraram vendas (mantido) -->
+  <h2 class="section-title">Conversas que viraram vendas</h2>
+  <div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div class="card" style="padding:14px">
+      <div class="card-title">Vendas originadas do WhatsApp</div>
+      <div class="kpi" style="margin-top:6px">
+        <div class="num" id="conv_to_ped">68 / 152</div>
+        <div class="pct">(45%)</div>
+      </div>
+    </div>
+    <div class="card" style="padding:14px">
+      <div class="card-title">Conversas analisadas (total)</div>
+      <div class="kpi" style="margin-top:6px">
+        <div class="num" id="qtd_total">380</div>
+      </div>
+    </div>
+    <div class="card" style="padding:14px">
+      <div class="card-title">Reclamações não resolvidas</div>
+      <div class="kpi" style="margin-top:6px">
+        <div class="num" id="recl_nr">16 / 38</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3) Clientes com reclamações recentes (mantido) -->
+  <h2 class="section-title">Clientes com reclamações recentes (entre 10 e 3 dias)</h2>
+  <div class="grid" style="grid-template-columns:1fr">
+    <div class="card">
+      <div class="card-title"><strong>Cliente Beta</strong> — <span class="tag neg">Não resolvida</span></div>
+      <p class="subtitle" style="margin:8px 0 0">Tema: Produto avariado — Ex.: “Frascos quebrados no lote 23B.”</p>
+      <p class="subtitle" style="margin:8px 0 0"><strong>Sugestão de mensagem:</strong> “Olá <b>Cliente Beta</b>, lamento pelo transtorno com o lote 23B. Acionei a reposição imediata e vou acompanhar pessoalmente até a entrega. Obrigado por nos avisar — vamos evitar que isso se repita.”</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><strong>Cliente Gamma</strong> — <span class="tag warn">Em aberto</span></div>
+      <p class="subtitle" style="margin:8px 0 0">Tema: Cobrança em duplicidade — Ex.: “Notas 771 e 772 com o mesmo valor.”</p>
+      <p class="subtitle" style="margin:8px 0 0"><strong>Sugestão de mensagem:</strong> “Olá <b>Cliente Gamma</b>, sentimos muito pela divergência na cobrança. Já abrimos a correção das notas 771 e 772 e priorizamos o estorno/ajuste. Fico à disposição para tratar diretamente com você até finalizar.”</p>
+      <p style="margin-top:8px"><a href="https://phj1976.github.io/html/aba4_reclamacoes_mockup.html" target="_blank" rel="noopener">Ver lista completa em Reclamações</a></p>
+    </div>
+  </div>
+
+  <p class="subtitle" style="margin-top:18px">Links rápidos:
+    <a href="https://phj1976.github.io/html/cockpit_do_gestor_aba_1_vendas.html" target="_blank" rel="noopener">Vendas</a> ·
+    <a href="https://phj1976.github.io/html/cockpit_aba_2_suporte_duvidas_html.html" target="_blank" rel="noopener">Suporte/Dúvidas</a> ·
+    <a href="https://phj1976.github.io/html/aba3_financeiro_mockup.html" target="_blank" rel="noopener">Financeiro</a> ·
+    <a href="https://phj1976.github.io/html/aba4_reclamacoes_mockup.html" target="_blank" rel="noopener">Reclamações</a>
+  </p>
+</div>
+
+<script>
+  // Hook legado do _V2
+  window.addEventListener("load", function() {
+    const elemento = document.querySelector(".widget-container .panel-default");
+    if (elemento) { elemento.style.border = "0px"; }
+  });
+  // Theme toggle
+  (function(){
+    var KEY="ui.theme"; var root=document.documentElement;
+    try{ var saved=localStorage.getItem(KEY); if(saved==="dark") root.setAttribute("data-theme","dark"); }catch(e){}
+    var t=document.getElementById("toggler");
+    if(t){ if(root.getAttribute("data-theme")==="dark") t.checked=true;
+      t.addEventListener("change",function(){
+        if(t.checked){ root.setAttribute("data-theme","dark"); try{localStorage.setItem(KEY,"dark")}catch(e){} }
+        else{ root.removeAttribute("data-theme"); try{localStorage.setItem(KEY,"light")}catch(e){} }
+      });
+    }
+  })();
+</script>
+</body>
+</html>
