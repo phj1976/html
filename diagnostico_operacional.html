@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Diagnóstico de Conversas — Apresentação (3 grupos + Reclamações Transversais)</title>
+<style>
+    /* ========= Escopo exclusivo ========= */
+    body{margin:0}
+    .container_tela{
+      --ink:#101828; --muted:#475467; --line:#e5e7eb; --card:#ffffff; --bg:#f7f9fc;
+      --accent:#2563eb; --accent-2:#22c55e; --accent-3:#f59e0b; --accent-4:#ef4444;
+      --shadow:0 10px 30px rgba(16,24,40,.08); --radius:22px;
+      font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue","Noto Sans",Arial,"Apple Color Emoji","Segoe UI Emoji"; color:var(--ink); background:var(--bg);
+      min-height:100vh;
+    }
+    .container_tela .wrap{max-width:1180px;margin:0 auto;padding:24px}
+    .container_tela h1,h2,h3{margin:0 0 6px}
+    .container_tela h1{font-size:28px;letter-spacing:-.01em}
+    .container_tela h2{font-size:22px}
+    .container_tela h3{font-size:16px;color:var(--muted);font-weight:600}
+
+    /* Slides */
+    .container_tela .deck{position:relative}
+    .container_tela .slide{
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:28px; display:none; min-height:560px
+    }
+    .container_tela .slide.active{display:block;animation:fade .25s ease}
+    @keyframes fade{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+    /* Header / Subtitle row */
+    .container_tela .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .container_tela .subtitle{color:var(--muted);font-size:14px}
+    .container_tela .badge{
+      display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#eef2ff;border:1px solid #e0e7ff;color:#3730a3;font-weight:600;font-size:12px
+    }
+
+    /* KPI row */
+    .container_tela .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0 8px}
+    .container_tela .kpi{
+      background:#f9fafb;border:1px solid var(--line);border-radius:16px;padding:16px 14px
+    }
+    .container_tela .kpi b{font-size:22px}
+    .container_tela .kpi span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+
+    /* Distribution */
+    .container_tela .dist{display:grid;grid-template-columns:360px 1fr;gap:20px;margin-top:16px}
+    .container_tela .donut{
+      width:260px;height:260px;border-radius:50%;margin:8px auto;position:relative;background:conic-gradient(
+        var(--accent) 0 40%,
+        var(--accent-2) 40% 80%,
+        var(--accent-3) 80% 100%,
+        #e5e7eb 0 0
+      )
+    }
+    .container_tela .donut::after{content:"";position:absolute;inset:28px;background:var(--card);border-radius:50%;box-shadow:inset 0 0 0 1px var(--line)}
+    .container_tela .donut-center{
+      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none
+    }
+    .container_tela .donut-center b{font-size:22px}
+    .container_tela .legend{display:grid;gap:10px}
+    .container_tela .lg{display:flex;align-items:center;gap:10px;font-size:14px}
+    .container_tela .dot{width:12px;height:12px;border-radius:3px}
+    .container_tela .p{margin-left:auto;font-variant-numeric:tabular-nums}
+    .container_tela .badge-compl{display:inline-flex;gap:6px;align-items:center;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;margin-left:8px}
+
+    /* Lists */
+    .container_tela .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .container_tela .card{
+      background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px
+    }
+    .container_tela .list{display:grid;gap:10px}
+    .container_tela .list .it{display:flex;gap:10px}
+    .container_tela .list .it .tag{min-width:10px;height:10px;border-radius:4px;margin-top:6px}
+    .container_tela .dim{color:var(--muted);font-size:13px}
+    .container_tela .pill{display:inline-flex;gap:6px;align-items:center;padding:3px 8px;border-radius:999px;border:1px solid var(--line);background:#f8fafc;font-size:12px}
+    .container_tela .ex{background:#f8fafc;border:1px dashed var(--line);border-radius:12px;padding:10px 12px;color:#334155}
+
+    /* FAQ */
+    .container_tela details{border:1px solid var(--line);border-radius:14px;background:#fcfdff}
+    .container_tela summary{cursor:pointer;padding:12px 14px;font-weight:600}
+    .container_tela details > div{padding:0 14px 12px 14px;color:var(--muted)}
+
+    /* Tables */
+    .container_tela .table{width:100%;border-collapse:collapse}
+    .container_tela .table th,.container_tela .table td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left}
+    .container_tela .table th{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+
+    /* Pager / bullets */
+    .container_tela .pager{display:flex;align-items:center;justify-content:space-between;margin:16px 0 6px}
+    .container_tela .navbtn{
+      display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;cursor:pointer;font-weight:600
+    }
+    .container_tela .bullets{display:flex;gap:10px}
+    .container_tela .b{
+      width:10px;height:10px;border-radius:999px;background:#d1d5db;border:1px solid #cbd5e1;cursor:pointer
+    }
+    .container_tela .b.active{background:var(--accent)}
+    .container_tela .footnote{color:var(--muted);font-size:12px;margin-top:10px}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .container_tela .dist{grid-template-columns:1fr}
+      .container_tela .kpis{grid-template-columns:repeat(1,minmax(0,1fr))}
+      .container_tela .grid-2{grid-template-columns:1fr}
+    }
+  
+    .container_tela .kpi.good{border-color:#d1fae5;background:#f0fdf4}
+    .container_tela .kpi.warn{border-color:#fef3c7;background:#fffbeb}
+    .container_tela .kpi.bad{border-color:#fee2e2;background:#fef2f2}
+    .container_tela .kpi .mini{margin-top:8px}
+
+
+    /* ===== Styles for new 2-line summary layout ===== */
+    .container_tela .totais{
+      display:grid; grid-template-columns: 360px 1fr; gap:16px; padding:16px;
+      background:#fff;border:1px solid var(--line);border-radius:16px; box-shadow:var(--shadow);
+      margin-top:6px
+    }
+    @media (max-width: 900px){ .container_tela .totais{grid-template-columns:1fr} }
+    .container_tela .donut{position:relative; width:100%; max-width:340px; aspect-ratio:1/1; margin:auto}
+    .container_tela .donut svg{transform:rotate(-90deg); width:100%; height:100%}
+    .container_tela .donut .center{position:absolute; inset:0; display:grid; place-items:center; text-align:center}
+    .container_tela .donut .center b{font-size:28px; letter-spacing:-.02em}
+    .container_tela .stats{display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px; margin-top:10px}
+    .container_tela .kpi .label{color:var(--muted); font-size:13px}
+    .container_tela .kpi .big{font-size:30px; font-weight:800; letter-spacing:-.02em}
+    .container_tela .kpi .sub{font-weight:700; color:var(--muted)}
+    .container_tela .legend .item{display:flex; align-items:center; gap:10px; font-weight:600}
+    .container_tela .legend .dot{width:10px; height:10px; border-radius:50%}
+    .container_tela .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:16px}
+    @media (max-width: 1000px){ .container_tela .grid3{grid-template-columns:1fr 1fr} }
+    @media (max-width: 640px){ .container_tela .grid3{grid-template-columns:1fr} }
+    .container_tela .band{display:flex; flex-direction:column; overflow:hidden; background:#fff;border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow)}
+    .container_tela .bandHeader{display:flex; justify-content:space-between; align-items:center; padding:16px}
+    .container_tela .chip{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; font-weight:700; border:1px solid var(--line); background:rgba(2,6,23,.03)}
+    .container_tela .vals{display:flex; gap:18px; align-items:baseline}
+    .container_tela .vals .big{font-size:28px; font-weight:800; letter-spacing:-.02em}
+    .container_tela .vals .pct{color:var(--muted); font-weight:700}
+    .container_tela .vals .rec{font-weight:700}
+    .container_tela .bandBody{padding:10px 12px 16px}
+    .container_tela .cloud{display:flex; flex-wrap:wrap; gap:10px 14px}
+    .container_tela .t{opacity:.95}
+    .container_tela .s1{font-size:14px; font-weight:600}
+    .container_tela .s2{font-size:18px; font-weight:700}
+    .container_tela .s3{font-size:22px; font-weight:800}
+    .container_tela .s4{font-size:28px; font-weight:800; letter-spacing:-.02em}
+    .container_tela .blue{color:var(--accent)}
+    .container_tela .green{color:var(--accent-2)}
+    .container_tela .amber{color:var(--accent-3)}
+    .container_tela .c-blue{background:#eef4ff}
+    .container_tela .c-green{background:#ecfdf5}
+    .container_tela .c-amber{background:#fff7ed}
+    .container_tela .noGap{padding:0}
+</style>
+</head>
+<body>
+<div class="container_tela" id="container_tela">
+<div class="wrap">
+<!-- HEADER -->
+<div class="hdr">
+<div>
+<h1>Diagnóstico de Conversas — Apresentação</h1>
+<div class="subtitle" id="subtitle_period">Período: 2025-09-01 a 2025-09-15</div>
+</div>
+</div>
+</div>
+<!-- PAGER -->
+<div class="pager">
+<button class="navbtn" id="btn_prev">⟵ Anterior</button>
+<div class="bullets" id="bullets"></div>
+<button class="navbtn" id="btn_next">Próximo ⟶</button>
+</div>
+<!-- DECK -->
+<div class="deck" id="deck">
+<!-- Slide 1: Sumário & Distribuição -->
+<section class="slide active" data-title="Sumário">
+<h2>Sumário &amp; Distribuição</h2>
+<!-- Linha 1: Totais -->
+<section class="card totais">
+<!-- Donut -->
+<div class="donut">
+<svg viewbox="0 0 120 120">
+<circle cx="60" cy="60" fill="none" r="46" stroke="#e5e7eb" stroke-width="16"></circle>
+<circle cx="60" cy="60" fill="none" r="46" stroke="#2563eb" stroke-dasharray="114.36 174.67" stroke-linecap="butt" stroke-width="16"></circle>
+<circle cx="60" cy="60" fill="none" r="46" stroke="#10b981" stroke-dasharray="121.16 167.87" stroke-dashoffset="-114.36" stroke-linecap="butt" stroke-width="16"></circle>
+<circle cx="60" cy="60" fill="none" r="46" stroke="#f59e0b" stroke-dasharray="53.15 235.88" stroke-dashoffset="-235.52" stroke-linecap="butt" stroke-width="16"></circle>
+</svg>
+<div class="center">
+<div>
+<b>Distribuição</b><br/>
+<small style="color:#475569">Comercial · Suporte · Financeiro</small>
+</div>
+</div>
+</div>
+<!-- Totais + legend -->
+<div>
+<div class="stats">
+<div class="kpi">
+<div class="label">Total de conversas</div>
+<div class="big">38</div>
+</div>
+<div class="kpi">
+<div class="item"><span class="dot" style="background:#2563eb"></span> Comerciais — <b>39,5%</b> <span class="sub">(60)</span></div>
+<div class="item"><span class="dot" style="background:#10b981"></span> Suporte/Logística — <b>42,1%</b> <span class="sub">(64)</span></div>
+<div class="item"><span class="dot" style="background:#f59e0b"></span> Cobranças/Financeiro — <b>18,4%</b> <span class="sub">(28)</span></div>
+</div>
+<div class="kpi">
+<div class="label">Reclamações</div>
+<div class="big">8</div>
+<div class="sub">(21,1%)</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Linha 2: 3 cards com info em cima e nuvem abaixo -->
+<section class="grid3">
+<!-- Comerciais -->
+<div class="card band c-blue noGap">
+<div class="bandHeader">
+<div class="chip"><span style="width:10px;height:10px;border-radius:50%;background:#2563eb"></span> Comerciais</div>
+<div class="vals">
+<span class="big" style="color:#2563eb">15</span>
+<span class="pct">39,5%</span>
+<span class="rec">Reclamações: <b>1</b> <span style="color:#475569">(6,7%)</span></span>
+</div>
+</div>
+<div class="bandBody">
+<div class="cloud">
+<span class="t blue s4">pedido</span>
+<span class="t blue s3">mix</span>
+<span class="t blue s2">condição</span>
+<span class="t blue s3">campanha</span>
+<span class="t blue s1">amostra</span>
+<span class="t blue s2">prazo</span>
+<span class="t blue s1">bônus</span>
+<span class="t blue s2">disponibilidade</span>
+<span class="t blue s3">reposição</span>
+<span class="t blue s1">catálogo</span>
+</div>
+</div>
+</div>
+<!-- Suporte/Logística -->
+<div class="card band c-green noGap">
+<div class="bandHeader">
+<div class="chip"><span style="width:10px;height:10px;border-radius:50%;background:#10b981"></span> Suporte / Logística</div>
+<div class="vals">
+<span class="big" style="color:#10b981">16</span>
+<span class="pct">42,1%</span>
+<span class="rec">Reclamações: <b>5</b> <span style="color:#475569">(31,3%)</span></span>
+</div>
+</div>
+<div class="bandBody">
+<div class="cloud">
+<span class="t green s4">entrega</span>
+<span class="t green s3">rastreamento</span>
+<span class="t green s2">troca</span>
+<span class="t green s3">lote</span>
+<span class="t green s1">validade</span>
+<span class="t green s2">nota</span>
+<span class="t green s3">separação</span>
+<span class="t green s1">coleta</span>
+<span class="t green s2">agendamento</span>
+<span class="t green s1">conferência</span>
+</div>
+</div>
+</div>
+<!-- Financeiro -->
+<div class="card band c-amber noGap">
+<div class="bandHeader">
+<div class="chip"><span style="width:10px;height:10px;border-radius:50%;background:#f59e0b"></span> Cobranças / Financeiro</div>
+<div class="vals">
+<span class="big" style="color:#f59e0b">7</span>
+<span class="pct">18,4%</span>
+<span class="rec">Reclamações: <b>2</b> <span style="color:#475569">(28,6%)</span></span>
+</div>
+</div>
+<div class="bandBody">
+<div class="cloud">
+<span class="t amber s4">boleto</span>
+<span class="t amber s3">fatura</span>
+<span class="t amber s2">renegociação</span>
+<span class="t amber s3">pagamento</span>
+<span class="t amber s1">conferência</span>
+<span class="t amber s2">segunda via</span>
+<span class="t amber s1">NF</span>
+<span class="t amber s2">vencimento</span>
+<span class="t amber s1">baixa</span>
+<span class="t amber s2">protesto</span>
+</div>
+</div>
+</div>
+</section>
+</section>
+<!-- Slide 2: Comerciais -->
+<section class="slide" data-title="Comerciais">
+<h2>Comerciais  </h2>
+<div class="dim" id="badge_compl_com"><span class="pill"> </span></div>
+<div class="grid-2" style="margin-top:12px">
+<div class="card">
+<h3>Subtemas mais frequentes</h3>
+<div class="list" id="list_com_subthemes">
+<div class="it">
+<div class="tag" style="background:var(--accent)"></div>
+<div>
+<div><b>Pedido de orçamento</b> <span class="dim">(6 • 15,8%)</span></div>
+<div class="dim">Solicitações iniciais de proposta ou valores para novos projetos ou pontos adicionais.</div>
+</div>
+</div>
+<div class="it">
+<div class="tag" style="background:var(--accent-2)"></div>
+<div>
+<div><b>Ajuste de escopo</b> <span class="dim">(5 • 13,2%)</span></div>
+<div class="dim">Solicitações para incluir ou excluir parâmetros, locais ou tipos de análise na proposta inicial.</div>
+</div>
+</div>
+<div class="it">
+<div class="tag" style="background:var(--accent-3)"></div>
+<div>
+<div><b>Condições de pagamento</b> <span class="dim">(4 • 10,5%)</span></div>
+<div class="dim">Negociações relacionadas a prazos, parcelamentos, ou formas de pagamento disponíveis.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h3>Principais Objeções</h3>
+<div class="list" id="list_com_examples">
+<div class="ex"><div><b style="color:#2563eb">Preço alto</b><br/>Cliente argumenta que o valor está acima do esperado ou do concorrente.</div></div>
+<div class="ex"><div><b style="color:#22c55e">Prazo de entrega</b><br/>Dúvida ou insatisfação com tempo de entrega dos serviços/produtos.</div></div>
+<div class="ex"><div><b style="color:#f59e0b">Condições de pagamento</b><br/>Solicitação de mais flexibilidade em parcelas, boletos ou prazos.</div></div>
+<div class="ex"><div><b style="color:#ef4444">Necessidade do produto</b><br/>Cliente questiona se realmente precisa ou se terá resultado prático.</div></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Slide 2: Comerciais - FAQ -->
+<section class="slide" data-title="Comerciais">
+<h2>Comerciais - Sugestão de FAQ  </h2>
+<div class="dim" id="badge_compl_com"><span class="pill"> </span></div>
+<div class="box mt2">
+<div class="tit">📋 Sugestão de FAQ (respostas prontas)</div>
+<div class="list">
+<div class="ex"><div><b>Vocês atendem minha região?</b><br/>Atendemos em todo o estado. Se houver dúvida, envie seu endereço e verificamos na hora.</div></div>
+<div class="ex"><div><b>Qual o prazo para coleta e entrega do laudo?</b><br/>Normalmente em até 3 dias úteis. Alguns casos podem variar conforme o tipo de análise.</div></div>
+<div class="ex"><div><b>É necessário preencher algum formulário?</b><br/>Sim, um breve formulário de identificação das amostras. Enviamos o modelo para facilitar.</div></div>
+</div>
+</div>
+<!-- Slide 2.2: Comerciais - objeções -->
+</section><section class="slide" data-title="Comercial - Objeções"><h2>Comerciais - Mensagens padrão para contornar objeções</h2><div class="box mt2"><div class="tit">🧩 Mensagens padrão (use como base e adapte)</div><div class="list"><div class="ex"><div><b>"Está caro"</b><br/>Entendo seu ponto. Nosso valor inclui coleta rastreável, escopo conforme norma (ex.: IN 161/ANVISA, CIDASC, CONAMA), laudo com RT e suporte técnico. Se fizer sentido, posso ajustar o escopo (ex.: remover itens opcionais), avaliar combo/recorrência ou fasear a implantação.</div></div><div class="ex"><div><b>"O concorrente faz mais barato"</b><br/>Posso comparar os escopos com você. Garantimos conformidade (ISO 17025), rastreabilidade da amostragem e prazos alinhados. Se os escopos forem equivalentes, verifico condição com o gestor.</div></div><div class="ex"><div><b>"Preciso do laudo antes do prazo"</b><br/>Temos opção de prioridade (‘rush’) conforme viabilidade técnica e agenda. Posso já comprometer uma data na proposta.</div></div><div class="ex"><div><b>"Quero coletar por conta própria para reduzir custo"</b><br/>É possível em parte dos casos. Envio instruções (volumes, frascaria, conservação) e retiramos a taxa de amostragem. Para parâmetros in loco (ex.: temperatura, materiais flutuantes), precisa do nosso técnico.</div></div><div class="ex"><div><b>"Não sei quais parâmetros preciso"</b><br/>Apoiamos a definição conforme norma/órgão (ex.: IN 161/ANVISA, CIDASC, CONSEMA/CONAMA) e objetivo (potabilidade, efluente, alimento, ar).</div></div><div class="ex"><div><b>"Pode dar desconto à vista?"</b><br/>Posso verificar com o gestor. Alternativas: recorrência programada, agrupamento de pontos, ou ajustes no escopo mantendo conformidade.</div></div></div></div></section>
+ 
+<!-- Slide 3: Suporte/Logística -->
+<section class="slide" data-title="Suporte/Logística">
+<h2>Suporte/Logística </h2>
+<div class="dim" id="badge_compl_sup"><span class="pill"> </span></div>
+<div class="grid-2" style="margin-top:12px">
+<div class="card">
+<h3>Subtemas mais frequentes</h3>
+<div class="list" id="list_sup_subthemes">
+<div class="it">
+<div class="tag" style="background:var(--accent)"></div>
+<div>
+<div><b>Agendamento/Reagendamento de coletas</b> <span class="dim">(6 • 15,8%)</span></div>
+<div class="dim">Demandas para marcar, remarcar ou cancelar datas de coleta, muitas vezes por indisponibilidade mútua ou imprevistos.</div>
+</div>
+</div>
+<div class="it">
+<div class="tag" style="background:var(--accent-2)"></div>
+<div>
+<div><b>Status operacional (em revisão/em análise)</b> <span class="dim">(4 • 10,5%)</span></div>
+<div class="dim">Solicitações de atualização sobre o andamento da análise técnica ou liberação dos laudos.</div>
+</div>
+</div>
+<div class="it">
+<div class="tag" style="background:var(--accent-3)"></div>
+<div>
+<div><b>Formulários/identificação de amostras</b> <span class="dim">(3 • 7,9%)</span></div>
+<div class="dim">Dúvidas e erros no preenchimento dos formulários de campo ou na identificação correta das amostras.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h3>Principais Reclamações</h3>
+<div class="list" id="list_sup_examples">
+<div class="ex"><div><b style="color:#2563eb">Coleta não realizada</b><br/>O cliente relata que a coleta agendada não foi feita ou não houve comparecimento.</div></div>
+<div class="ex"><div><b style="color:#22c55e">Amostras trocadas ou extraviadas</b><br/>Erro na identificação ou envio incorreto de amostras.</div></div>
+<div class="ex"><div><b style="color:#f59e0b">Prazo de laudo não cumprido</b><br/>O laudo demorou mais do que o previsto, gerando impacto na operação do cliente.</div></div>
+<div class="ex"><div><b style="color:#ef4444">Reagendamento frequente</b><br/>Coletas precisam ser remarcadas por falhas de comunicação ou instruções incompletas.</div></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Slide 3: Suporte/Logística - FAQ -->
+<section class="slide" data-title="Suporte/Logística">
+<h2>Suporte/Logística - Sugestão de FAQ  </h2>
+<div class="dim" id="badge_compl_sup"><span class="pill"> </span></div>
+<div class="box mt2">
+<div class="tit">📋 Sugestão de FAQ (logística / suporte)</div>
+<div class="list">
+<div class="ex"><div><b>Posso acompanhar o status da minha coleta?</b><br/>Sim. Informamos quando a coleta está agendada, em rota ou concluída. Caso tenha dúvidas, é só nos chamar.</div></div>
+<div class="ex"><div><b>Como recebo o laudo?</b><br/>Os laudos são enviados por e-mail em até 3 dias úteis após a coleta, dependendo do tipo de análise.</div></div>
+<div class="ex"><div><b>Como corrigir dados errados no laudo?</b><br/>Nos avise assim que identificar. Corrigimos o documento e reenviamos com a devida atualização.</div></div>
+</div>
+</div>
+</section>
+<!-- Slide 4: Financeiro -->
+<section class="slide" data-title="Financeiro">
+<h2>Cobranças/Financeiro </h2>
+<div class="dim" id="badge_compl_fin"><span class="pill"> </span></div>
+<div class="grid-2" style="margin-top:12px">
+<div class="card">
+<h3>Subtemas mais frequentes</h3>
+<div class="list" id="list_fin_subthemes">
+<div class="it">
+<div class="tag" style="background:var(--accent)"></div>
+<div>
+<div><b>Prazo de pagamento / vencimento</b> <span class="dim">(3 • 7,9%)</span></div>
+<div class="dim">Questões sobre datas de vencimento, prorrogação de prazo ou antecipação de cobrança.</div>
+</div>
+</div>
+<div class="it">
+<div class="tag" style="background:var(--accent-2)"></div>
+<div>
+<div><b>NF/2ª via/PIX</b> <span class="dim">(2 • 5,3%)</span></div>
+<div class="dim">Pedidos para reenvio de boletos, nota fiscal ou link de pagamento via PIX.</div>
+</div>
+</div>
+<div class="it">
+<div class="tag" style="background:var(--accent-3)"></div>
+<div>
+<div><b>CNPJ/E-mails de cobrança</b> <span class="dim">(2 • 5,3%)</span></div>
+<div class="dim">Problemas com dados incorretos no cadastro fiscal, como CNPJ ou e-mail de faturamento.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h3>Principais Reclamações</h3>
+<div class="list" id="list_fin_examples">
+<div class="ex"><div><b style="color:#2563eb">Cobrança em CNPJ incorreto</b><br/>Fatura emitida com dados fiscais errados, impedindo o pagamento.</div></div>
+<div class="ex"><div><b style="color:#22c55e">Segunda via não enviada</b><br/>Cliente solicita reenvio da fatura e não obtém resposta rápida.</div></div>
+<div class="ex"><div><b style="color:#f59e0b">Boleto vencido sem aviso</b><br/>Cliente só descobre o vencimento quando tenta pagar.</div></div>
+<div class="ex"><div><b style="color:#ef4444">Laudo bloqueado indevidamente</b><br/>Cliente afirma que o pagamento foi feito, mas o acesso ao laudo continua bloqueado.</div></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Slide 4: Financeiro - FAQ -->
+<section class="slide" data-title="Financeiro">
+<h2>Cobranças/Financeiro - Sugestão de FAQ  </h2>
+<div class="dim" id="badge_compl_fin"><span class="pill"> </span></div>
+<div class="box mt2">
+<div class="tit">📋 Sugestão de FAQ (financeiro / cobrança)</div>
+<div class="list">
+<div class="ex"><div><b>Como solicitar a 2ª via da fatura?</b><br/>Basta nos informar o CNPJ e o período. Reenviamos por e-mail em minutos.</div></div>
+<div class="ex"><div><b>O pagamento foi feito, mas o sistema ainda mostra pendente</b><br/>Pode ocorrer atraso de até 1 dia útil na compensação. Se já pagou, envie o comprovante para agilizarmos.</div></div>
+<div class="ex"><div><b>Consigo atualizar o e-mail de cobrança?</b><br/>Sim. Basta informar o novo e-mail que atualizamos em nosso sistema para os próximos envios.</div></div>
+</div>
+</div>
+</section>
+<!-- Slide 7: Atritos & Insights -->
+<section class="slide" data-title="Atritos &amp; Insights">
+<h2>Fontes de Atrito &amp; Insights para o Gestor</h2>
+<div class="grid-2">
+<div class="card">
+<h3>Fontes de Atrito (root causes)</h3>
+<table class="table" id="tbl_frictions">
+<thead><tr><th>Atrito</th><th class="dim">% estimado</th><th>Grupo</th><th>Por que importa</th></tr></thead>
+<tbody>
+<tr><td><b>Status de laudo pouco visível</b><div class="dim">status_laudo_pouco_visivel</div></td><td>12,0%</td><td>support_logistics</td><td>Gera perguntas repetidas e ansiedade do cliente.</td></tr>
+<tr><td><b>Briefing de coleta incompleto</b><div class="dim">briefing_coleta_incompleto</div></td><td>8,0%</td><td>support_logistics</td><td>Aumenta reagendamentos e retrabalho de campo.</td></tr>
+<tr><td><b>Cadastro fiscal inconsistente</b><div class="dim">cadastro_fiscal_inconsistente</div></td><td>6,0%</td><td>finance</td><td>Atrasa faturamento e liberação de laudos.</td></tr>
+<tr><td><b>Aprovação de orçamento lenta</b><div class="dim">aprovacao_orcamento_lenta</div></td><td>5,0%</td><td>commercial</td><td>Alongamento do ciclo de venda e perda de janela.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card">
+<h3>Insights para o Gestor</h3>
+<div class="list" id="list_insights">
+<div class="it"><div class="tag" style="background:var(--accent)"></div><div><b>Comunicação por marcos do laudo</b><div class="dim">Automatize mensagens (recebido → análise → revisão → liberado) e reduza 30–50% dos contatos de status.</div></div></div>
+<div class="it"><div class="tag" style="background:var(--accent)"></div><div><b>Checklist de coleta com confirmação 24h</b><div class="dim">Forma simples de derrubar reagendamentos e erros de identificação de amostras.</div></div></div>
+<div class="it"><div class="tag" style="background:var(--accent)"></div><div><b>Validação cadastral no kick-off</b><div class="dim">CNPJ e e-mails corretos antes da primeira OS evitam bloqueios e divergências.</div></div></div>
+<div class="it"><div class="tag" style="background:var(--accent)"></div><div><b>Pacotes comerciais com add-ons</b><div class="dim">Transparência para ajustes de escopo e prazos; acelera aprovação.</div></div></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<script>
+  window.addEventListener("load", function() {
+    const el = document.querySelector(".widget-container .panel-default");
+    if (el) el.style.border = "0";
+    buildBullets();
+  });
+
+  const deck = document.getElementById('deck');
+  const slides = () => Array.from(deck.querySelectorAll('.slide'));
+  function activeIndex(){ return slides().findIndex(s=>s.classList.contains('active')) }
+  function go(i){
+    const arr = slides();
+    if(i<0||i>=arr.length) return;
+    arr.forEach(s=>s.classList.remove('active'));
+    arr[i].classList.add('active');
+    syncBullets(i);
+  }
+  document.getElementById('btn_prev').addEventListener('click', ()=> go(activeIndex()-1));
+  document.getElementById('btn_next').addEventListener('click', ()=> go(activeIndex()+1));
+  window.addEventListener('keydown', (e)=>{
+    if(['ArrowRight','PageDown'].includes(e.key)) go(activeIndex()+1);
+    if(['ArrowLeft','PageUp'].includes(e.key)) go(activeIndex()-1);
+  });
+
+  function buildBullets(){
+    const b = document.getElementById('bullets'); b.innerHTML='';
+    slides().forEach((s, idx)=>{
+      const span = document.createElement('div'); span.className='b'+(s.classList.contains('active')?' active':''); 
+      span.title = s.dataset.title || `Slide ${idx+1}`;
+      span.addEventListener('click', ()=> go(idx));
+      b.appendChild(span);
+    });
+  }
+  function syncBullets(idx){
+    const b = document.getElementById('bullets').children;
+    Array.from(b).forEach((el,i)=> el.classList.toggle('active', i===idx));
+  }
+</script>
+</body>
+</html>
