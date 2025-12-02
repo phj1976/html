@@ -1,0 +1,145 @@
+<style>
+    .cockpit {
+        font-family: "Inter", Arial, sans-serif;
+        background: #f7faff;
+        color: #1b2a41;
+        padding: 20px;
+    }
+
+    .cockpit h1 {
+        font-size: 26px;
+        margin-bottom: 20px;
+        color: #123A66;
+    }
+
+    .grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(12, 1fr);
+    }
+
+    .card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #dce6f5;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .card h2 {
+        font-size: 18px;
+        margin-bottom: 12px;
+        color: #0f2f52;
+    }
+
+    .spark {
+        font-family: monospace;
+        font-size: 12px;
+        color: #ff7a00; /* laranja */
+        margin-top: 4px;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .duplo {
+        grid-column: span 12;
+    }
+
+    .col-6 {
+        grid-column: span 6;
+    }
+
+    .col-4 {
+        grid-column: span 4;
+    }
+</style>
+
+<div class="cockpit">
+    <h1>COCKPIT — Visão Geral</h1>
+
+    <div class="grid">
+
+        <!-- OPORTUNIDADES -->
+        <div class="card duplo">
+            <h2>Oportunidades Ativas</h2>
+            <strong>R$ 182.000</strong> — potencial do mês
+
+
+            <p>TM atual: <strong>R$ 640</strong></p>
+	        <span class="spark">Tendência: ▄▅█▆▄█</span>		
+            <p>Valor potencial do perfil: <strong>R$ 920</strong></p>
+            <p>GAP de oportunidade: <strong>+43%</strong></p>
+
+            <br>
+            <p>Clientes fora do intervalo: <strong>27</strong></p>
+            <p>Mix em queda: <strong>12</strong></p>
+            <p>Ticket abaixo do perfil: <strong>34</strong></p>
+        </div>
+
+ 
+
+
+        <!-- A COMPRAR -->
+        <div class="card col-4">
+            <h2>A Comprar (0–30 dias)</h2>
+            <p>Clientes: <strong>54</strong></p>
+            <p>Potencial: <strong>R$ 68.500</strong></p>
+            <p>Ticket médio: <strong>R$ 740</strong></p>
+
+            <span class="spark">▂▄▆█▇█</span>
+        </div>
+
+        <!-- FORA DO CICLO -->
+        <div class="card col-4">
+            <h2>Fora do Ciclo (31–90 dias)</h2>
+            <p>Clientes: <strong>27</strong></p>
+            <p>Potencial em risco: <strong>R$ 42.000</strong></p>
+            <p>Ticket histórico: <strong>R$ 880</strong></p>
+
+            <span class="spark">█▇▅▄▂</span>
+        </div>
+
+        <!-- INATIVOS -->
+        <div class="card col-4">
+            <h2>Inativos (90+ dias)</h2>
+            <p>Clientes: <strong>19</strong></p>
+            <p>Potencial congelado: <strong>R$ 98.000</strong></p>
+            <p>Mix premium: <strong>62%</strong></p>
+
+            <span class="spark">▇▄▂▁▁</span>
+        </div>
+
+        <!-- PROJEÇÃO DO MÊS -->
+        <div class="card duplo">
+            <h2>Projeção do Mês</h2>
+
+            <p>Cenário pessimista: <strong>R$ 480.000</strong></p>
+            <p>Cenário normal: <strong>R$ 530.000</strong></p>
+            <p>Cenário otimista: <strong>R$ 580.000</strong></p>
+
+            <span class="spark">Tendência: ▁▂▄▅▆█</span>
+        </div>	
+		
+        <!-- ÍNDICES ESTRATÉGICOS -->
+        <div class="card col-6">
+            <h2>Índices Estratégicos</h2>
+
+            <p>Aproveitamento da carteira: <strong>61%</strong></p>
+            <span class="spark">▄▃▄▅█</span>
+
+            <p>Qualidade da carteira: <strong>72/100</strong></p>
+            <span class="spark">▄▅█▆█</span>
+
+            <p>Nível atividade dos vendedores: <strong>Módulo não instalado (atividades criadas, no prazo, tempo resposta)</strong></p>
+            <span class="spark">▃▅█▅▄</span>
+
+            <p>Nível satisfação do cliente: <strong>Módulo não instalado  (NPS e análise conversas)</strong></p>
+            <span class="spark">▃▅█▅▄</span>
+			
+           <p>Conversão de negócios: <strong>Módulo não instalado  </strong></p>
+            <span class="spark">▃▅█▅▄</span>			
+        </div>
+	
+
+    </div>
+</div>
