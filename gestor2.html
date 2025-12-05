@@ -1,0 +1,620 @@
+
+	<style>
+    .cp-indices {
+        margin-top: 24px;
+        font-family: "Inter", Arial, sans-serif;
+    }
+
+    .cp-indices h2 {
+        font-size: 20px;
+        color: #123a66;
+        margin-bottom: 14px;
+    }
+
+    .cp-ind-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 20px;
+    }
+
+    .cp-ind-card {
+        background: #ffffff;
+        border: 1px solid #d9e4f7;
+        border-radius: 12px;
+        padding: 18px 20px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        position: relative;
+    }
+
+    .cp-ind-title {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #8090a8;
+        margin-bottom: 8px;
+    }
+
+    .cp-ind-value {
+        font-size: 26px;
+        font-weight: 600;
+        color: #123a66;
+        margin-bottom: 6px;
+    }
+
+    .cp-ind-sub {
+        font-size: 13px;
+        font-weight: 500;
+        color: #ff7a00;
+    }
+
+    .cp-spark {
+        margin-top: 6px;
+        font-family: "SF Mono", Consolas, monospace;
+        font-size: 12px;
+        color: #ff7a00;
+    }
+
+    .cp-details {
+        position: absolute;
+        top: 14px;
+        right: 16px;
+        font-size: 12px;
+        background: #eef3ff;
+        color: #355b9c;
+        padding: 4px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 1px solid #c8d8f6;
+    }
+
+    .cp-span-4 {
+        grid-column: span 4;
+    }
+
+    @media (max-width: 1024px) {
+        .cp-span-4 { grid-column: span 12; }
+    }
+</style>
+
+<div class="cp-indices">
+    <h2>Índices Essenciais do Mês</h2>
+
+    <div class="cp-ind-grid">
+
+        <!-- SITUAÇÃO DA CARTEIRA -->
+        <div class="cp-ind-card cp-span-4">
+            <div class="cp-details">ver detalhes</div>
+            <div class="cp-ind-title">Situação Atual da Carteira</div>
+
+            <div class="cp-ind-value">64%</div>
+            <div class="cp-ind-sub">carteira ativada no mês</div>
+
+            <div class="cp-spark">Tendência: ▂▄▆█▇█</div>
+        </div>
+
+        <!-- FREQUÊNCIA / RECOMPRA -->
+        <div class="cp-ind-card cp-span-4">
+            <div class="cp-details">ver detalhes</div>
+            <div class="cp-ind-title">Frequência & Recompra</div>
+
+            <div class="cp-ind-value">-2,1 dias</div>
+            <div class="cp-ind-sub">queda na recompra média</div>
+
+            <div class="cp-spark">Tendência: █▇▄▂▁</div>
+        </div>
+
+        <!-- RITMO COMERCIAL DO TIME -->
+        <div class="cp-ind-card cp-span-4">
+            <div class="cp-details">ver detalhes</div>
+            <div class="cp-ind-title">Ritmo Comercial do Time</div>
+
+            <div class="cp-ind-value">71%</div>
+            <div class="cp-ind-sub">clientes críticos acionados</div>
+
+            <div class="cp-spark">Tendência: ▃▄▆█▆</div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .cockpit-projec {
+        font-family: "Inter", Arial, sans-serif;
+        background: #f6f9ff;
+        color: #12263f;
+        padding: 24px;
+    }
+
+    .cockpit-projec h1 {
+        font-size: 26px;
+        margin-bottom: 18px;
+        color: #123a66;
+    }
+
+    .cockpit-projec h2 {
+        font-size: 18px;
+        margin-bottom: 12px;
+        color: #0f2f52;
+    }
+
+    .cp-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 20px;
+    }
+
+    .cp-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 18px 20px;
+        border: 1px solid #d9e4f7;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .cp-card strong {
+        color: #0f2f52;
+    }
+
+    .cp-span-12 { grid-column: span 12; }
+    .cp-span-8  { grid-column: span 8; }
+    .cp-span-6  { grid-column: span 6; }
+    .cp-span-4  { grid-column: span 4; }
+    .cp-span-3  { grid-column: span 3; }
+
+    .cp-label {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #64728d;
+        margin-bottom: 4px;
+    }
+
+    .cp-spark {
+        font-family: "SF Mono", Consolas, monospace;
+        font-size: 11px;
+        margin-top: 6px;
+        color: #ff7a00;
+    }
+
+    .cp-line {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .cp-line span:first-child {
+        color: #4b5d7a;
+    }
+
+    .cp-kpi-main {
+        font-size: 22px;
+        font-weight: 600;
+        color: #123a66;
+    }
+
+    .cp-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 500;
+        margin-left: 6px;
+    }
+
+    .cp-badge.up {
+        background: #e1f7ee;
+        color: #137b42;
+    }
+
+    .cp-badge.down {
+        background: #ffe4dd;
+        color: #bf2b1f;
+    }
+
+    .cp-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 6px;
+        font-size: 14px;
+    }
+
+    .cp-table th,
+    .cp-table td {
+        padding: 6px 4px;
+        text-align: left;
+    }
+
+    .cp-table th {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #7a879c;
+        border-bottom: 1px solid #e0e7f5;
+    }
+
+    .cp-table td {
+        border-bottom: 1px solid #f0f3fb;
+    }
+
+    .cp-chart-block {
+        font-family: "SF Mono", Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        background: #f1f5ff;
+        border-radius: 10px;
+        padding: 10px 12px;
+        border: 1px dashed #c5d4ff;
+        margin-top: 8px;
+    }
+
+    @media (max-width: 1024px) {
+        .cp-span-3, .cp-span-4, .cp-span-6, .cp-span-8, .cp-span-12 {
+            grid-column: span 12;
+        }
+    }
+</style>
+
+<div class="cockpit-projec">
+    <h1>Projeção do Mês</h1>
+
+    <div class="cp-grid">
+
+        <!-- GRUPOS DE PROJEÇÃO -->
+        <div class="cp-card cp-span-3">
+            <div class="cp-label">Grupo</div>
+            <h2>Novos</h2>
+            <div class="cp-line">
+                <span>Mais provável</span>
+                <span><strong>8 clientes</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Ticket médio</span>
+                <span><strong>R$ 420</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Potencial</span>
+                <span class="cp-kpi-main">R$ 3.360</span>
+            </div>
+            <span class="cp-spark">Tendência: ▄▅█▆▄▂</span>
+        </div>
+
+        <div class="cp-card cp-span-3">
+            <div class="cp-label">Grupo</div>
+            <h2>A Comprar (0–30 dias)</h2>
+            <div class="cp-line">
+                <span>Total</span>
+                <span><strong>54 clientes</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Mais provável</span>
+                <span><strong>22 clientes</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Ticket médio</span>
+                <span><strong>R$ 740</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Potencial</span>
+                <span class="cp-kpi-main">R$ 16.280</span>
+            </div>
+            <span class="cp-spark">Tendência: ▂▄▆█▇█</span>
+        </div>
+
+        <div class="cp-card cp-span-3">
+            <div class="cp-label">Grupo</div>
+            <h2>Fora do Ciclo (31–90 dias)</h2>
+            <div class="cp-line">
+                <span>Total</span>
+                <span><strong>27 clientes</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Mais provável</span>
+                <span><strong>9 clientes</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Ticket médio</span>
+                <span><strong>R$ 880</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Potencial</span>
+                <span class="cp-kpi-main">R$ 7.920</span>
+            </div>
+            <span class="cp-spark">Tendência: █▇▅▄▂</span>
+        </div>
+
+        <div class="cp-card cp-span-3">
+            <div class="cp-label">Grupo</div>
+            <h2>Inativos (90+ dias)</h2>
+            <div class="cp-line">
+                <span>Total</span>
+                <span><strong>19 clientes</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Mais provável</span>
+                <span><strong>3 clientes</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Ticket médio</span>
+                <span><strong>R$ 1.240</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Potencial</span>
+                <span class="cp-kpi-main">R$ 3.720</span>
+            </div>
+            <span class="cp-spark">Tendência: ▇▄▂▁▁</span>
+        </div>
+
+        <!-- RESUMO PROJEÇÃO -->
+        <div class="cp-card cp-span-4">
+            <h2>Resumo da Projeção</h2>
+            <div class="cp-line">
+                <span>Potencial dos grupos</span>
+                <span><strong>R$ 31.280</strong></span>
+            </div>
+            <div class="cp-line">
+                <span>Vendido até hoje</span>
+                <span><strong>R$ 412.000</strong></span>
+            </div>
+            <hr style="border:none;border-top:1px solid #e0e7f5;margin:10px 0;">
+            <div class="cp-line">
+                <span>Projeção final do mês</span>
+                <span class="cp-kpi-main">R$ 443.280</span>
+            </div>
+        </div>
+
+        <!-- GRÁFICO FINAL META x REAL x PROJEÇÃO -->
+        <div class="cp-card cp-span-8">
+            <h2>Meta × Realizado × Projeção</h2>
+            <div class="cp-chart-block">
+META        ───────────▁▂▂▃▄▅▆██
+REALIZADO   ───────▁▂▄▅███
+PROJEÇÃO    ─────────────▁▂▄▆█▇█
+            </div>
+        </div>
+
+        <!-- DIAGNÓSTICO QTD -->
+        <div class="cp-card cp-span-6">
+            <h2>Diagnóstico — QTD</h2>
+            <table class="cp-table">
+                <thead>
+                    <tr>
+                        <th>Grupo</th>
+                        <th>Δ Qtd</th>
+                        <th>Status</th>
+                        <th>Tendência</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Novos</td>
+                        <td>-5</td>
+                        <td>
+                            <span class="cp-badge down">↓ pior</span>
+                        </td>
+                        <td><span class="cp-spark">▅▄▁▁</span></td>
+                    </tr>
+                    <tr>
+                        <td>Carteira</td>
+                        <td>-9</td>
+                        <td>
+                            <span class="cp-badge down">↓ pior</span>
+                        </td>
+                        <td><span class="cp-spark">█▇▅▄▂</span></td>
+                    </tr>
+                    <tr>
+                        <td>Recuperação</td>
+                        <td>-4</td>
+                        <td>
+                            <span class="cp-badge down">↓ fraco</span>
+                        </td>
+                        <td><span class="cp-spark">▇▄▂▁</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- DIAGNÓSTICO TM -->
+        <div class="cp-card cp-span-6">
+            <h2>Diagnóstico — TM</h2>
+            <table class="cp-table">
+                <thead>
+                    <tr>
+                        <th>Grupo</th>
+                        <th>Δ TM</th>
+                        <th>Status</th>
+                        <th>Tendência</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Novos</td>
+                        <td>-R$ 10</td>
+                        <td>
+                            <span class="cp-badge down">↓ pior</span>
+                        </td>
+                        <td><span class="cp-spark">▄▅█▆▄</span></td>
+                    </tr>
+                    <tr>
+                        <td>Carteira</td>
+                        <td>-R$ 8</td>
+                        <td>
+                            <span class="cp-badge down">↓ pior</span>
+                        </td>
+                        <td><span class="cp-spark">█▇▄▂</span></td>
+                    </tr>
+                    <tr>
+                        <td>Recuperação</td>
+                        <td>-R$ 4</td>
+                        <td>
+                            <span class="cp-badge down">↓ negativo</span>
+                        </td>
+                        <td><span class="cp-spark">▇▄▂▁</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+		
+		
+
+    </div>
+	
+
+	
+	<style>
+    .cp-attention {
+        background: #ffffff;
+        border: 1px solid #d9e4f7;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        font-family: "Inter", Arial, sans-serif;
+        margin-top: 24px;
+    }
+
+    .cp-attention h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+        color: #123a66;
+    }
+
+    .cp-attention p {
+        font-size: 15px;
+        line-height: 1.5;
+        color: #304055;
+        margin-bottom: 14px;
+    }
+
+    .cp-section-title {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #7a879c;
+        margin-top: 14px;
+        margin-bottom: 6px;
+    }
+
+    .cp-att-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        font-size: 14px;
+        border-bottom: 1px solid #eef2fa;
+    }
+
+    .cp-att-item span:first-child {
+        color: #4b5d7a;
+    }
+
+    .cp-badge-down {
+        background: #ffe4dd;
+        color: #bf2b1f;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .cp-badge-neutral {
+        background: #f1f4f9;
+        color: #6e7b91;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .cp-spark {
+        font-family: "SF Mono", Consolas, monospace;
+        font-size: 11px;
+        color: #ff7a00;
+    }
+</style>
+
+
+<div class="cp-attention">
+    <h2>Pontos de Atenção do Mês</h2>
+
+    <p>
+        O mês apresentou sinais claros de desaceleração: a 
+        <strong>Quantidade (QTD) caiu em praticamente todas as frentes</strong> e o 
+        <strong>Ticket Médio (TM) também recuou</strong>, concentrado na Carteira e na Recuperação.
+        Os números indicam que os clientes compraram menos vezes e com um mix mais simples.
+    </p>
+
+    <!-- QTD -->
+    <div class="cp-section-title">QTD — Onde caiu</div>
+
+    <div class="cp-att-item">
+        <span>Novos</span>
+        <span>
+            -5 
+            <span class="cp-badge-down">↓</span>
+        </span>
+    </div>
+
+    <div class="cp-att-item">
+        <span>Carteira</span>
+        <span>
+            -9
+            <span class="cp-badge-down">↓</span>
+        </span>
+    </div>
+
+    <div class="cp-att-item">
+        <span>Recuperação</span>
+        <span>
+            -4
+            <span class="cp-badge-down">↓</span>
+        </span>
+    </div>
+
+    <p>
+        A queda de QTD veio principalmente porque os clientes da Carteira reduziram sua frequência, 
+        enquanto os de Recuperação seguem retornando em ritmo mais lento. 
+        Entre os Novos, a entrada menor de leads qualificados reduziu o volume inicial do mês.
+    </p>
+
+    <!-- TM -->
+    <div class="cp-section-title">TM — Por que caiu</div>
+
+    <div class="cp-att-item">
+        <span>Menos itens por venda</span>
+        <span>
+            -1,3 itens
+            <span class="cp-badge-down">↓</span>
+        </span>
+    </div>
+
+    <div class="cp-att-item">
+        <span>Menos variedade</span>
+        <span>
+            -18%
+            <span class="cp-badge-down">↓</span>
+        </span>
+    </div>
+
+    <div class="cp-att-item">
+        <span>Qualidade do mix</span>
+        <span>
+            TM -R$ 8
+            <span class="cp-badge-down">↓</span>
+        </span>
+    </div>
+
+    <p>
+        O TM caiu porque os pedidos ficaram menores e com menos variedade. 
+        Além disso, houve uma troca gradual de produtos premium por itens mais baratos, reduzindo o valor final das vendas. 
+        O resultado é um mês com compras menores e menos robustas, mesmo entre os clientes ativos.
+    </p>
+
+    <div class="cp-section-title">Tendência geral</div>
+    <p class="cp-spark">Tendência consolidada: ▇▅▄▂▁</p>
+</div>
+
+
+
+
+
+</div>
